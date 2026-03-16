@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>oops — Undo for your terminal | Ctrl+Z for the command line</title>
-  <meta name="description" content="oops is an open-source CLI that backs up files before destructive terminal commands like rm, mv, sed -i, and git reset --hard. Type oops to restore them instantly. macOS and Linux.">
-  <meta name="keywords" content="terminal undo, undo rm, undo delete terminal, recover deleted files terminal, cli undo tool, rm undo, git reset undo, command line undo, oops cli, terminal backup">
+  <meta name="description" content="oops is an open-source CLI that backs up files before destructive terminal commands like rm, mv, sed -i, and git reset --hard. Type oops to restore them instantly. Works with AI coding agents like Claude Code, Cursor, and Aider. macOS and Linux.">
+  <meta name="keywords" content="terminal undo, undo rm, undo delete terminal, recover deleted files terminal, cli undo tool, rm undo, git reset undo, command line undo, oops cli, terminal backup, ai agent safety, claude code undo, cursor undo, ai coding agent safety net">
   <meta name="author" content="gedaliahs">
   <meta name="theme-color" content="#151515">
   <link rel="icon" type="image/png" href="favicon.png">
@@ -32,7 +32,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "oops",
-    "description": "A CLI tool that adds undo to your terminal. Backs up files before destructive commands like rm, mv, sed -i, git reset --hard, chmod, and file redirects. Type oops to restore them.",
+    "description": "A CLI tool that adds undo to your terminal. Backs up files before destructive commands like rm, mv, sed -i, git reset --hard, chmod, and file redirects. Type oops to restore them. Works as a safety net for AI coding agents.",
     "url": "https://oops-cli.com",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Linux",
@@ -122,12 +122,42 @@
   </div>
 </div>
 
+<div class="section" id="ai">
+  <div class="container">
+    <div class="grid">
+      <div class="col-5 section-head">
+        <h2>Works with AI agents</h2>
+        <p>Claude Code, Cursor, Aider, Codex &mdash; any tool that runs shell commands in your terminal goes through the same hook.</p>
+      </div>
+      <div class="col-12">
+        <p style="color:var(--fg2);max-width:640px">AI coding agents are getting more autonomy. They run <code>rm</code>, <code>git reset --hard</code>, and <code>mv</code> on your behalf &mdash; and sometimes they get it wrong. oops catches these the same way it catches your commands. If an agent deletes something it shouldn't have, type <code style="color:var(--red)">oops</code> and it's back.</p>
+
+        <div class="term" style="max-width:560px;margin-top:1.5rem">
+          <div class="term-bar">
+            <div class="term-dot"></div>
+            <div class="term-dot"></div>
+            <div class="term-dot"></div>
+          </div>
+          <pre><span class="tp"># AI agent runs a destructive command</span>
+<span class="tp">~ $</span> git reset --hard HEAD~3
+<span class="tw">&#9650; git reset --hard</span>
+
+<span class="tp"># you notice it wiped your uncommitted work</span>
+<span class="tp">~ $</span> <span class="tr">oops</span>
+<span class="tg">&#10003; Undid: git reset --hard</span>
+<span class="tg">  Applied stash: stash@{0}</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="section" id="install">
   <div class="container">
     <div class="grid">
       <div class="col-5 section-head">
         <h2>Install</h2>
-        <p>One command. The installer walks you through each step with y/n prompts &mdash; binary, shell hook, and backup directory.</p>
+        <p>One command. The installer handles the binary, shell hook, and backup directory.</p>
       </div>
       <div class="col-12">
         <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>

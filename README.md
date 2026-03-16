@@ -52,6 +52,10 @@ $ oops
 | `oops --version` | Print version |
 | `oops --upgrade` | Upgrade to the latest version |
 
+## Works with AI coding agents
+
+Any tool that runs shell commands in your terminal goes through the same hook — Claude Code, Cursor, Aider, Codex, etc. If an AI agent accidentally runs `rm -rf` or `git reset --hard`, oops catches it. Type `oops` to undo what the agent did.
+
 ## How it works
 
 A `preexec` shell hook pattern-matches each command. Non-destructive commands pass through with zero overhead (no subprocess). Destructive commands trigger `oops protect`, which copies affected files to `~/.oops/trash/` in ~10ms, then lets the original command run.
