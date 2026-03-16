@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oops FAQ — Frequently asked questions</title>
+  <meta name="description" content="Common questions about oops: how it works, what it catches, performance, storage, AI agent support, and more.">
+  <meta name="keywords" content="oops faq, terminal undo faq, can you undo rm, undo git reset hard, ctrl z terminal, recover deleted files terminal, ai agent undo">
+  <meta name="theme-color" content="#151515">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="canonical" href="https://oops-cli.com/faq/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://oops-cli.com/faq/">
+  <meta property="og:title" content="oops FAQ">
+  <meta property="og:description" content="Common questions about oops — undo for your terminal.">
+  <meta property="og:image" content="https://oops-cli.com/icon-512.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can you undo rm in the terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not by default — rm permanently deletes files. But if you have oops installed, it automatically backs up files before rm runs. Type 'oops' to restore them. Install with: curl -fsSL oops-cli.com/install.sh | bash"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you undo rm -rf?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Without a backup tool, no. rm -rf permanently deletes files and directories recursively. oops catches rm -rf before it runs, backs up the entire directory tree using hard links (instant, no extra disk space), and lets you restore with one command."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a Ctrl+Z for the terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not built into any shell. oops adds this functionality by installing a shell hook that watches for destructive commands (rm, mv, sed -i, git reset --hard, etc.), backs up affected files, and lets you undo by typing 'oops'."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I undo git reset --hard?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Without oops: check git reflog for committed changes, but uncommitted work is usually gone. With oops: it automatically creates a git stash before the reset runs. Type 'oops' to apply the stash and get your changes back."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I recover a file after sed -i?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "sed -i edits files in place with no backup by default. If the file is in git, you can restore it with git checkout. If oops is installed, it copies the file before sed -i runs, and you can restore with 'oops'."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does oops slow down my terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Non-destructive commands (ls, cat, git log, etc.) have zero overhead — the shell hook is pure pattern matching, no subprocess is spawned. Destructive commands take about 10ms to back up using hard links. You won't notice it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much disk space does oops use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Minimal. Backups use hard links, which don't consume extra disk space until the original file is deleted. After deletion, only the actual file size is used. Auto-cleanup removes entries older than 7 days, with a maximum of 5GB. Both are configurable."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does oops work with AI coding agents like Claude Code or Cursor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Any tool that runs shell commands in your terminal goes through the same shell hook. If Claude Code, Cursor, Aider, or any other AI agent runs rm, git reset --hard, or mv, oops catches it and backs up the files. Type 'oops' to undo what the agent did."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What shells does oops support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "zsh, bash, and fish. It uses each shell's native preexec mechanism (preexec for zsh, DEBUG trap for bash, fish_preexec for fish)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does oops work on Linux?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. oops works on macOS and Linux, on both amd64 and arm64 architectures. It's a single Go binary with no dependencies."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I uninstall oops?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Run 'oops uninstall'. It removes the shell hook from your shell config and deletes the backup directory. Then run 'sudo rm /usr/local/bin/oops' to remove the binary."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What commands does oops catch?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "rm, rm -rf, mv (when overwriting), sed -i, chmod, chown, git reset --hard, git checkout ., git branch -D, git clean -fd, file redirects (> file.txt), and truncate."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .faq-page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+    .faq-page h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: .3rem;
+    }
+    .faq-page > p:first-of-type {
+      color: var(--fg3);
+      margin-bottom: 3rem;
+    }
+    .faq-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:first-of-type {
+      border-top: 1px solid var(--border);
+    }
+    .faq-q {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: .5rem;
+      color: var(--fg);
+    }
+    .faq-a {
+      color: var(--fg2);
+      font-size: .92rem;
+      line-height: 1.7;
+    }
+    .faq-a code {
+      font-family: var(--mono);
+      font-size: .84em;
+      background: var(--bg2, #1c1c1c);
+      padding: .12em .4em;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    .faq-a a { color: var(--red); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container">
+    <a href="/" class="nav-logo">oops</a>
+    <div class="nav-r">
+      <a href="/#commands">Commands</a>
+      <a href="/#install">Install</a>
+      <a href="/docs">Docs</a>
+      <a href="https://github.com/gedaliahs/oops" class="nav-gh">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="faq-page">
+
+  <h1>FAQ</h1>
+  <p>Common questions about oops.</p>
+
+  <div class="faq-item">
+    <div class="faq-q">Can you undo rm in the terminal?</div>
+    <div class="faq-a">Not by default &mdash; <code>rm</code> permanently deletes files. But if you have oops installed, it automatically backs up files before <code>rm</code> runs. Type <code>oops</code> to restore them.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Can you undo rm -rf?</div>
+    <div class="faq-a">Without a backup tool, no. <code>rm -rf</code> permanently deletes files and directories. oops catches <code>rm -rf</code> before it runs, backs up the entire directory tree using hard links (instant, no extra disk space), and lets you restore with one command.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Is there a Ctrl+Z for the terminal?</div>
+    <div class="faq-a">Not built into any shell. oops adds this by installing a shell hook that watches for destructive commands and lets you undo by typing <code>oops</code>.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">How do I undo git reset --hard?</div>
+    <div class="faq-a">Without oops: check <code>git reflog</code> for committed changes, but uncommitted work is usually gone. With oops: it creates a git stash before the reset. Type <code>oops</code> to apply the stash and get your changes back.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">How do I recover a file after sed -i?</div>
+    <div class="faq-a"><code>sed -i</code> edits files in place with no backup. If the file is in git, try <code>git checkout</code>. If oops is installed, it copies the file before <code>sed -i</code> runs, and you can restore with <code>oops</code>.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Does oops slow down my terminal?</div>
+    <div class="faq-a">No. Non-destructive commands have zero overhead &mdash; no subprocess is spawned. Destructive commands take about 10ms to back up. You won't notice it.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">How much disk space does oops use?</div>
+    <div class="faq-a">Minimal. Backups use hard links, which don't use extra space until the original is deleted. Auto-cleanup removes entries older than 7 days, with a 5GB cap. Both are configurable via <code>oops config</code>.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Does oops work with AI coding agents?</div>
+    <div class="faq-a">Yes. Claude Code, Cursor, Aider, Codex &mdash; any tool that runs shell commands goes through the same hook. If an agent runs <code>rm</code> or <code>git reset --hard</code>, oops catches it.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">What shells does oops support?</div>
+    <div class="faq-a">zsh, bash, and fish. It uses each shell's native preexec mechanism.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Does oops work on Linux?</div>
+    <div class="faq-a">Yes. macOS and Linux, amd64 and arm64. Single Go binary, no dependencies.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">What commands does oops catch?</div>
+    <div class="faq-a"><code>rm</code>, <code>rm -rf</code>, <code>mv</code> (overwrites), <code>sed -i</code>, <code>chmod</code>, <code>chown</code>, <code>git reset --hard</code>, <code>git checkout .</code>, <code>git branch -D</code>, <code>git clean -fd</code>, file redirects (<code>&gt; file</code>), and <code>truncate</code>.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">How do I uninstall oops?</div>
+    <div class="faq-a">Run <code>oops uninstall</code>. It removes the shell hook and backup directory. Then run <code>sudo rm /usr/local/bin/oops</code> to remove the binary.</div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <span>oops &mdash; MIT license</span>
+    <span><a href="/docs">Docs</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
