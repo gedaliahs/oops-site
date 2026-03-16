@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect fill="#e05252" width="512" height="512" rx="108" ry="108"/>
+  <!-- undo arrow curving counterclockwise -->
+  <path fill="#fff" d="
+    M 152 330
+    l -52 -52
+    l 52 -52
+    l 0 30
+    c 0 0 24 -2 48 -22
+    c 30 -25 58 -70 58 -70
+    c 0 0 30 -48 90 -68
+    c 32 -11 68 -12 68 -12
+    l 0 44
+    c 0 0 -28 1 -50 10
+    c -40 16 -64 52 -64 52
+    c 0 0 -30 48 -68 80
+    c -34 28 -72 36 -82 38
+    l 0 22
+    Z
+  "/>
+  <!-- terminal cursor block -->
+  <rect fill="#fff" x="280" y="274" width="40" height="56" rx="4" ry="4"/>
+  <!-- terminal prompt underscore -->
+  <rect fill="#fff" x="336" y="314" width="32" height="16" rx="3" ry="3"/>
+</svg>
