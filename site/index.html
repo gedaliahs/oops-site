@@ -47,6 +47,112 @@
   }
   </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to add undo to your terminal",
+    "description": "Install oops to automatically back up files before destructive terminal commands and restore them with one command.",
+    "totalTime": "PT1M",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Install oops",
+        "text": "Run: curl -fsSL oops-cli.com/install.sh | bash. This downloads the binary, adds the shell hook, and creates the backup directory.",
+        "url": "https://oops-cli.com/#install"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Open a new terminal tab",
+        "text": "The shell hook activates when your shell starts. Open a new tab or window to activate it."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Use your terminal normally",
+        "text": "oops runs in the background. When you run a destructive command like rm, mv, sed -i, or git reset --hard, it silently backs up the affected files using hard links (instant, no extra disk space)."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Type oops to undo",
+        "text": "If you make a mistake, type 'oops' to restore the files. Use 'oops 2' for the second-to-last action. Use 'oops log' to see your full history."
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I undo rm in the terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Install oops (curl -fsSL oops-cli.com/install.sh | bash). It automatically backs up files before rm runs. Type 'oops' to restore them. Works with rm, rm -rf, and rm with any flags."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you undo a command in the terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "There is no built-in undo in any terminal shell. oops adds undo by installing a shell hook that backs up files before destructive commands run. It catches rm, mv overwrites, sed -i, git reset --hard, chmod, chown, file redirects, and more. Type 'oops' to undo."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to recover a deleted file on Mac terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If the file was deleted with rm, it bypasses the Trash and is permanently gone. Recovery tools like testdisk may help but are unreliable on SSDs. To prevent this, install oops — it backs up files before rm runs so you can restore them by typing 'oops'."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to undo git reset --hard?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For committed changes, check git reflog. For uncommitted changes, they are usually gone permanently. oops prevents this by creating a git stash before the reset runs. Type 'oops' to apply the stash and recover your work."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to undo git checkout?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "git checkout . discards all uncommitted changes permanently. oops catches this by creating a stash before the checkout runs. Type 'oops' to apply the stash and get your changes back."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there Ctrl+Z for the terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No shell has built-in undo for commands. Ctrl+Z in the terminal suspends the current process, it doesn't undo anything. oops is a CLI tool that adds real undo — it backs up files before destructive commands and lets you restore them."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to protect files from AI coding agents?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI coding agents like Claude Code, Cursor, and Aider run shell commands on your behalf, including rm and git reset --hard. oops catches these automatically through the same shell hook. If an agent deletes something, type 'oops' to restore it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to undo sed -i?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "sed -i edits files in place with no backup. The original content is gone unless the file is tracked by git. oops prevents this by copying the file before sed -i runs. Type 'oops' to restore the original."
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
