@@ -22,6 +22,11 @@ var (
 	helpDesc = lipgloss.NewStyle().Foreground(lipgloss.Color("#9ca3af"))
 )
 
+var Version = "0.2.0"
+
+var versionFlag bool
+var upgradeFlag bool
+
 var rootCmd = &cobra.Command{
 	Use:   "oops [N]",
 	Short: "Terminal undo — restore your last destructive command",
@@ -31,11 +36,13 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.SetHelpFunc(customHelp)
+	rootCmd.Flags().BoolVarP(&versionFlag, "version", "v", false, "Print version")
+	rootCmd.Flags().BoolVar(&upgradeFlag, "upgrade", false, "Upgrade oops to the latest version")
 }
 
 func customHelp(cmd *cobra.Command, args []string) {
 	fmt.Println()
-	fmt.Println("  " + helpRed.Render("oops") + helpDim.Render(" — undo for your terminal"))
+	fmt.Println("  " + helpRed.Render("oops") + helpDim.Render(" v"+Version+" — undo for your terminal"))
 	fmt.Println()
 	fmt.Println("  " + helpBold.Render("Usage"))
 	fmt.Println("    oops" + helpDim.Render("           undo the last destructive action"))
@@ -49,6 +56,10 @@ func customHelp(cmd *cobra.Command, args []string) {
 	printCmd("oops doctor", "check installation health")
 	printCmd("oops init <shell>", "print shell hook (zsh, bash, fish)")
 	printCmd("oops uninstall", "remove oops from your system")
+	fmt.Println()
+	fmt.Println("  " + helpBold.Render("Flags"))
+	printCmd("--version, -v", "print version")
+	printCmd("--upgrade", "upgrade to the latest version")
 	fmt.Println()
 	fmt.Println("  " + helpBold.Render("Examples"))
 	fmt.Println("    " + helpDim.Render("$") + " rm important-file.txt")
@@ -82,6 +93,15 @@ func Execute() {
 }
 
 func runUndo(cmd *cobra.Command, args []string) error {
+	if versionFlag {
+		fmt.Println(helpRed.Render("oops") + " " + helpDim.Render("v"+Version))
+		return nil
+	}
+
+	if upgradeFlag {
+		return runUpgrade()
+	}
+
 	cleanup.RunIfNeeded()
 
 	n := 1
@@ -132,6 +152,17 @@ func runUndo(cmd *cobra.Command, args []string) error {
 	}
 
 	return nil
+}
+
+func runUpgrade() error {
+	fmt.Println(helpRed.Render("oops") + " upgrading from " + helpDim.Render("v"+Version) + "...")
+	fmt.Println()
+
+	upgradeCmd := exec.Command("bash", "-c", "curl -fsSL oops-cli.com/install.sh | bash")
+	upgradeCmd.Stdout = os.Stdout
+	upgradeCmd.Stderr = os.Stderr
+	upgradeCmd.Stdin = os.Stdin
+	return upgradeCmd.Run()
 }
 
 func undoGit(entry journal.Entry) error {
