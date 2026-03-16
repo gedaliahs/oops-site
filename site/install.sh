@@ -136,6 +136,35 @@ fi
 
 # ── Done ─────────────────────────────────────────────
 
+# ── Activate ─────────────────────────────────────────
+
+if [ -n "$RC_FILE" ] && [ -f "$RC_FILE" ] && grep -q "oops init" "$RC_FILE" 2>/dev/null; then
+  # Source the rc file in a way that works for the current shell
+  case "$SHELL_NAME" in
+    zsh|bash)
+      # exec replaces this process with a fresh shell that has the hook loaded
+      echo ""
+      echo -e "  ${G}Done!${N} oops is active. Try it:"
+      echo ""
+      echo -e "  ${D}\$${N} rm something.txt"
+      echo -e "  ${D}\$${N} ${R}oops${N}"
+      echo -e "  ${G}✓${N} restored something.txt"
+      echo ""
+      exec "$SHELL" -l
+      ;;
+    fish)
+      echo ""
+      echo -e "  ${G}Done!${N} oops is active. Try it:"
+      echo ""
+      echo -e "  ${D}\$${N} rm something.txt"
+      echo -e "  ${D}\$${N} ${R}oops${N}"
+      echo -e "  ${G}✓${N} restored something.txt"
+      echo ""
+      exec fish -l
+      ;;
+  esac
+fi
+
 echo ""
 echo -e "  ${G}Done!${N} Restart your shell and try it:"
 echo ""
