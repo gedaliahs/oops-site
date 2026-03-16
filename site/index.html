@@ -19,9 +19,9 @@
   <div class="container">
     <a href="/" class="nav-logo">oops</a>
     <div class="nav-r">
-      <a href="#how">How it works</a>
       <a href="#commands">Commands</a>
-      <a href="#install">Setup</a>
+      <a href="#install">Install</a>
+      <a href="docs.html">Docs</a>
       <a href="https://github.com/gedaliahs/oops" class="nav-gh">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
@@ -40,7 +40,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       </button>
     </div>
-    <p class="note">or <a href="#install">see all install options</a></p>
+    <p class="note">The installer handles everything &mdash; downloads the binary, adds the shell hook, and sets up the backup directory. Just answer y/n.</p>
 
     <div class="term">
       <div class="term-bar">
@@ -58,58 +58,12 @@
   </div>
 </div>
 
-<div class="section" id="how">
-  <div class="container">
-    <div class="grid">
-      <div class="col-6 section-head">
-        <h2>How it works</h2>
-        <p>A shell hook that intercepts destructive commands, backs up files, and lets you undo.</p>
-      </div>
-      <div class="col-12">
-        <div class="how-item">
-          <div class="grid">
-            <div class="col-3">
-              <div class="how-num">01</div>
-              <h3>Shell hook intercepts</h3>
-            </div>
-            <div class="col-9">
-              <p>A lightweight <code>preexec</code> hook pattern-matches your command. If it's not destructive &mdash; like <code>ls</code>, <code>cat</code>, <code>git log</code> &mdash; it passes through instantly. No subprocess spawned, zero overhead.</p>
-            </div>
-          </div>
-        </div>
-        <div class="how-item">
-          <div class="grid">
-            <div class="col-3">
-              <div class="how-num">02</div>
-              <h3>Files get backed up</h3>
-            </div>
-            <div class="col-9">
-              <p>For destructive commands, oops copies affected files to <code>~/.oops/trash/</code> in about 10ms. Then your original command runs normally. You never notice.</p>
-            </div>
-          </div>
-        </div>
-        <div class="how-item">
-          <div class="grid">
-            <div class="col-3">
-              <div class="how-num">03</div>
-              <h3>Type oops to undo</h3>
-            </div>
-            <div class="col-9">
-              <p>Your files are restored to their original paths. Use <code>oops 2</code> for the second-to-last action, or <code>oops log</code> to browse your full history.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="section" id="commands">
   <div class="container">
     <div class="grid">
-      <div class="col-6 section-head">
-        <h2>Supported commands</h2>
-        <p>Not just rm. oops handles the full range of destructive operations.</p>
+      <div class="col-5 section-head">
+        <h2>What it catches</h2>
+        <p>oops intercepts destructive commands before they run and silently backs up the affected files. Non-destructive commands pass through with zero overhead.</p>
       </div>
       <div class="col-12">
         <table>
@@ -122,9 +76,8 @@
             <tr><td>chmod / chown</td><td>Records original permissions</td><td>restore</td></tr>
             <tr><td>git reset --hard</td><td>Creates a stash before reset</td><td>stash apply</td></tr>
             <tr><td>git checkout .</td><td>Creates a stash</td><td>stash apply</td></tr>
-            <tr><td>git branch -D</td><td>Logs the branch SHA</td><td>recreate</td></tr>
+            <tr><td>git branch -D</td><td>Logs the branch SHA before deletion</td><td>recreate</td></tr>
             <tr><td>git clean -fd</td><td>Stashes untracked files</td><td>stash apply</td></tr>
-            <tr><td>truncate</td><td>Copies file before truncation</td><td>restore</td></tr>
           </tbody>
         </table>
       </div>
@@ -132,31 +85,44 @@
   </div>
 </div>
 
-<div class="install-section" id="install">
+<div class="section" id="install">
   <div class="container">
     <div class="grid">
-      <div class="col-6 section-head">
-        <h2>Get started</h2>
-        <p>Install the binary and add the shell hook.</p>
+      <div class="col-5 section-head">
+        <h2>Install</h2>
+        <p>One command. The installer walks you through each step with y/n prompts &mdash; binary, shell hook, and backup directory.</p>
       </div>
-      <div class="col-6">
-        <div class="install-block">
-          <h3>Install</h3>
-          <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
-        </div>
+      <div class="col-12">
+        <div class="cb"><span class="c"># install everything interactively</span>
+curl -fsSL oops-cli.com/install.sh | bash
+
+<span class="c"># or via homebrew</span>
+brew install gedaliahs/oops/oops</div>
       </div>
-      <div class="col-6">
-        <div class="install-block">
-          <h3>Add the shell hook</h3>
-          <div class="cb"><span class="c"># zsh (~/.zshrc)</span>
-eval <span class="r">"$(oops init zsh)"</span>
+    </div>
+  </div>
+</div>
 
-<span class="c"># bash (~/.bashrc)</span>
-eval <span class="r">"$(oops init bash)"</span>
-
-<span class="c"># fish (config.fish)</span>
-oops init fish | source</div>
-        </div>
+<div class="section">
+  <div class="container">
+    <div class="grid">
+      <div class="col-5 section-head">
+        <h2>CLI reference</h2>
+      </div>
+      <div class="col-12">
+        <table>
+          <thead><tr><th>Command</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>oops</td><td>Undo the last destructive action</td></tr>
+            <tr><td>oops 2</td><td>Undo the second-to-last action</td></tr>
+            <tr><td>oops log</td><td>Show undo history</td></tr>
+            <tr><td>oops size</td><td>Show backup disk usage</td></tr>
+            <tr><td>oops clean</td><td>Remove old backups (--all for everything)</td></tr>
+            <tr><td>oops config</td><td>View or change settings</td></tr>
+            <tr><td>oops doctor</td><td>Check installation health</td></tr>
+            <tr><td>oops uninstall</td><td>Remove oops from your system</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -165,10 +131,10 @@ oops init fish | source</div>
 <div class="cta">
   <div class="container">
     <h2>Type <span>oops</span>. Get your files back.</h2>
-    <p>Single binary, written in Go, no dependencies. ~10ms overhead.</p>
+    <p>Single binary, written in Go, no dependencies. ~10ms backup overhead. Auto-cleanup after 7 days. <a href="docs.html">Read the docs</a>.</p>
     <div class="install-bar">
-      <code><span class="d">$</span> brew install oops</code>
-      <button class="copy-btn" onclick="copyCmd(this,'brew install oops')" aria-label="Copy">
+      <code><span class="d">$</span> curl -fsSL oops-cli.com/install.sh | bash</code>
+      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       </button>
     </div>
