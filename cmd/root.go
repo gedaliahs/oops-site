@@ -55,6 +55,7 @@ func customHelp(cmd *cobra.Command, args []string) {
 	printCmd("oops config", "view or change settings")
 	printCmd("oops doctor", "check installation health")
 	printCmd("oops init <shell>", "print shell hook (zsh, bash, fish)")
+	printCmd("oops tutorial", "interactive walkthrough")
 	printCmd("oops uninstall", "remove oops from your system")
 	fmt.Println()
 	fmt.Println("  " + helpBold.Render("Flags"))

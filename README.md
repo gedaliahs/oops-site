@@ -47,6 +47,7 @@ $ oops
 | `oops clean` | Remove old backups (`--all` for everything) |
 | `oops config` | View or change settings |
 | `oops doctor` | Check installation health |
+| `oops tutorial` | Interactive walkthrough |
 | `oops uninstall` | Remove oops from your system |
 | `oops --version` | Print version |
 | `oops --upgrade` | Upgrade to the latest version |
