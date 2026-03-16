@@ -79,10 +79,12 @@ fi
 
 tar -xzf "$TMP/oops.tar.gz" -C "$TMP"
 
+mkdir -p "$INSTALL_DIR" 2>/dev/null || true
 if [ -w "$INSTALL_DIR" ]; then
   mv "$TMP/oops" "$INSTALL_DIR/oops"
 else
   info "Requires sudo for ${INSTALL_DIR}"
+  sudo mkdir -p "$INSTALL_DIR"
   sudo mv "$TMP/oops" "$INSTALL_DIR/oops"
 fi
 chmod +x "$INSTALL_DIR/oops"

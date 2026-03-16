@@ -2,8 +2,10 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 )
 
@@ -71,14 +73,11 @@ func Get(key string) string {
 	cfg := Load()
 	switch key {
 	case "retention_days":
-		return formatInt(cfg.RetentionDays)
+		return strconv.Itoa(cfg.RetentionDays)
 	case "max_trash_bytes":
-		return formatInt64(cfg.MaxTrashBytes)
+		return strconv.FormatInt(cfg.MaxTrashBytes, 10)
 	case "risk_warning":
-		if cfg.RiskWarning {
-			return "true"
-		}
-		return "false"
+		return strconv.FormatBool(cfg.RiskWarning)
 	default:
 		return ""
 	}
@@ -88,15 +87,15 @@ func Set(key, value string) error {
 	cfg := Load()
 	switch key {
 	case "retention_days":
-		n, err := parseInt(value)
+		n, err := strconv.Atoi(value)
 		if err != nil {
-			return err
+			return fmt.Errorf("invalid value for retention_days: %s", value)
 		}
 		cfg.RetentionDays = n
 	case "max_trash_bytes":
-		n, err := parseInt64(value)
+		n, err := strconv.ParseInt(value, 10, 64)
 		if err != nil {
-			return err
+			return fmt.Errorf("invalid value for max_trash_bytes: %s", value)
 		}
 		cfg.MaxTrashBytes = n
 	case "risk_warning":
@@ -128,68 +127,3 @@ func MarkCleanup() {
 	_ = os.WriteFile(LastCleanupPath(), []byte(time.Now().Format(time.RFC3339)), 0o644)
 }
 
-func formatInt(n int) string {
-	return json.Number(itoa(n)).String()
-}
-
-func formatInt64(n int64) string {
-	return json.Number(i64toa(n)).String()
-}
-
-func parseInt(s string) (int, error) {
-	var n int
-	err := json.Unmarshal([]byte(s), &n)
-	return n, err
-}
-
-func parseInt64(s string) (int64, error) {
-	var n int64
-	err := json.Unmarshal([]byte(s), &n)
-	return n, err
-}
-
-func itoa(n int) string {
-	if n == 0 {
-		return "0"
-	}
-	buf := make([]byte, 0, 20)
-	neg := false
-	if n < 0 {
-		neg = true
-		n = -n
-	}
-	for n > 0 {
-		buf = append(buf, byte('0'+n%10))
-		n /= 10
-	}
-	if neg {
-		buf = append(buf, '-')
-	}
-	for i, j := 0, len(buf)-1; i < j; i, j = i+1, j-1 {
-		buf[i], buf[j] = buf[j], buf[i]
-	}
-	return string(buf)
-}
-
-func i64toa(n int64) string {
-	if n == 0 {
-		return "0"
-	}
-	buf := make([]byte, 0, 20)
-	neg := false
-	if n < 0 {
-		neg = true
-		n = -n
-	}
-	for n > 0 {
-		buf = append(buf, byte('0'+n%10))
-		n /= 10
-	}
-	if neg {
-		buf = append(buf, '-')
-	}
-	for i, j := 0, len(buf)-1; i < j; i, j = i+1, j-1 {
-		buf[i], buf[j] = buf[j], buf[i]
-	}
-	return string(buf)
-}
