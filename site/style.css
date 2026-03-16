@@ -409,6 +409,34 @@ td:last-child {
 .docs-content ul { padding-left: 1.2rem; margin-bottom: .8rem; }
 .docs-content li { color: var(--fg2); margin-bottom: .2rem; font-size: .92rem; }
 
+/* ---- faq ---- */
+dl { margin: 0; }
+dt {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg);
+  padding-top: 1.5rem;
+}
+dd {
+  color: var(--fg2);
+  font-family: var(--sans);
+  font-size: .92rem;
+  line-height: 1.7;
+  margin: .4rem 0 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+dd:last-child { border-bottom: none; }
+dd code {
+  font-family: var(--mono);
+  font-size: .84em;
+  background: var(--bg2);
+  padding: .12em .4em;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
 /* ---- responsive ---- */
 @media (max-width: 1024px) {
   :root { --cols: 8; --margin: 40px; }

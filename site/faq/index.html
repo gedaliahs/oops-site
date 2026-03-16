@@ -119,106 +119,55 @@
           <h2 style="font-size:1.6rem">FAQ</h2>
         </div>
 
-        <table>
-          <tbody>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">Can you undo rm in the terminal?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">Not by default &mdash; <code>rm</code> permanently deletes files. With oops installed, files are backed up automatically before <code>rm</code> runs. Type <code>oops</code> to restore.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">Can you undo rm -rf?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">Without oops, no. With oops, it backs up the entire directory tree using hard links (instant, no extra disk space) and restores with one command.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">Is there a Ctrl+Z for the terminal?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">Not built into any shell. oops adds this with a shell hook that watches for destructive commands and lets you undo by typing <code>oops</code>.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How do I undo git reset --hard?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">Without oops: <code>git reflog</code> might help for committed changes, but uncommitted work is gone. With oops: it stashes your changes before the reset. Type <code>oops</code> to apply the stash.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How do I recover a file after sed -i?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)"><code>sed -i</code> edits in place with no backup. If it's in git, try <code>git checkout</code>. With oops, the file is copied before the edit runs.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">Does oops slow down my terminal?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">No. Safe commands have zero overhead &mdash; no subprocess spawned. Destructive commands take ~10ms to back up.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How much disk space does oops use?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">Minimal. Hard links don't use extra space until the original is deleted. Auto-cleanup after 7 days, 5GB cap. Configurable via <code>oops config</code>.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">Does oops work with AI coding agents?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">Yes. Claude Code, Cursor, Aider, Codex &mdash; any tool that runs shell commands goes through the same hook.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">What shells and platforms?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">zsh, bash, and fish on macOS and Linux. Single Go binary, no dependencies.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">What commands does oops catch?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)"><code>rm</code>, <code>rm -rf</code>, <code>mv</code> overwrites, <code>sed -i</code>, <code>chmod</code>, <code>chown</code>, <code>git reset --hard</code>, <code>git checkout .</code>, <code>git branch -D</code>, <code>git clean -fd</code>, redirects (<code>&gt; file</code>), <code>truncate</code>.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">Can you undo a command in the terminal?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">No shell has built-in undo. Ctrl+Z suspends a process, it doesn't undo anything. oops adds real undo by backing up files before destructive commands and restoring them on demand.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How to recover a deleted file on Mac terminal?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)"><code>rm</code> bypasses the Trash entirely. Recovery tools like <code>testdisk</code> may help but are unreliable on SSDs. Install oops to prevent this &mdash; it backs up files before <code>rm</code> runs.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How to undo git checkout?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)"><code>git checkout .</code> discards all uncommitted changes permanently. oops creates a stash before it runs. Type <code>oops</code> to apply the stash.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How to undo sed -i?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)"><code>sed -i</code> edits in place with no backup. The original is gone unless tracked by git. oops copies the file before <code>sed -i</code> runs.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How to protect files from AI coding agents?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem;border-bottom:1px solid var(--border)">AI agents like Claude Code and Cursor run shell commands on your behalf. oops catches these through the same shell hook. If an agent deletes something, type <code>oops</code>.</td>
-            </tr>
-            <tr>
-              <td style="font-family:var(--sans);color:var(--fg);font-weight:600;white-space:normal;padding:1.2rem 0 .4rem">How do I uninstall?</td>
-            </tr>
-            <tr>
-              <td style="color:var(--fg2);padding:0 0 1.2rem">Run <code>oops uninstall</code>, then <code>sudo rm /usr/local/bin/oops</code>.</td>
-            </tr>
-          </tbody>
-        </table>
+        <dl>
+          <dt>Can you undo rm in the terminal?</dt>
+          <dd>Not by default &mdash; <code>rm</code> permanently deletes files. With oops installed, files are backed up automatically before <code>rm</code> runs. Type <code>oops</code> to restore.</dd>
+
+          <dt>Can you undo rm -rf?</dt>
+          <dd>Without oops, no. With oops, it backs up the entire directory tree using hard links (instant, no extra disk space) and restores with one command.</dd>
+
+          <dt>Is there a Ctrl+Z for the terminal?</dt>
+          <dd>Not built into any shell. oops adds this with a shell hook that watches for destructive commands and lets you undo by typing <code>oops</code>.</dd>
+
+          <dt>How do I undo git reset --hard?</dt>
+          <dd>Without oops: <code>git reflog</code> might help for committed changes, but uncommitted work is gone. With oops: it stashes your changes before the reset. Type <code>oops</code> to apply the stash.</dd>
+
+          <dt>How do I recover a file after sed -i?</dt>
+          <dd><code>sed -i</code> edits in place with no backup. If it's in git, try <code>git checkout</code>. With oops, the file is copied before the edit runs.</dd>
+
+          <dt>Does oops slow down my terminal?</dt>
+          <dd>No. Safe commands have zero overhead &mdash; no subprocess spawned. Destructive commands take ~10ms to back up.</dd>
+
+          <dt>How much disk space does oops use?</dt>
+          <dd>Minimal. Hard links don't use extra space until the original is deleted. Auto-cleanup after 7 days, 5GB cap. Configurable via <code>oops config</code>.</dd>
+
+          <dt>Does oops work with AI coding agents?</dt>
+          <dd>Yes. Claude Code, Cursor, Aider, Codex &mdash; any tool that runs shell commands goes through the same hook.</dd>
+
+          <dt>What shells and platforms?</dt>
+          <dd>zsh, bash, and fish on macOS and Linux. Single Go binary, no dependencies.</dd>
+
+          <dt>What commands does oops catch?</dt>
+          <dd><code>rm</code>, <code>rm -rf</code>, <code>mv</code> overwrites, <code>sed -i</code>, <code>chmod</code>, <code>chown</code>, <code>git reset --hard</code>, <code>git checkout .</code>, <code>git branch -D</code>, <code>git clean -fd</code>, redirects (<code>&gt; file</code>), <code>truncate</code>.</dd>
+
+          <dt>Can you undo a command in the terminal?</dt>
+          <dd>No shell has built-in undo. Ctrl+Z suspends a process, it doesn't undo anything. oops adds real undo by backing up files before destructive commands and restoring them on demand.</dd>
+
+          <dt>How to recover a deleted file on Mac terminal?</dt>
+          <dd><code>rm</code> bypasses the Trash entirely. Recovery tools like <code>testdisk</code> may help but are unreliable on SSDs. Install oops to prevent this &mdash; it backs up files before <code>rm</code> runs.</dd>
+
+          <dt>How to undo git checkout?</dt>
+          <dd><code>git checkout .</code> discards all uncommitted changes permanently. oops creates a stash before it runs. Type <code>oops</code> to apply the stash.</dd>
+
+          <dt>How to undo sed -i?</dt>
+          <dd><code>sed -i</code> edits in place with no backup. The original is gone unless tracked by git. oops copies the file before <code>sed -i</code> runs.</dd>
+
+          <dt>How to protect files from AI coding agents?</dt>
+          <dd>AI agents like Claude Code and Cursor run shell commands on your behalf. oops catches these through the same shell hook. If an agent deletes something, type <code>oops</code>.</dd>
+
+          <dt>How do I uninstall?</dt>
+          <dd>Run <code>oops uninstall</code>, then <code>sudo rm /usr/local/bin/oops</code>.</dd>
+        </dl>
 
       </div>
     </div>
