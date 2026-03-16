@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strconv"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/gedaliah/oops/internal/cleanup"
 	"github.com/gedaliah/oops/internal/journal"
 	"github.com/gedaliah/oops/internal/style"
@@ -13,12 +14,65 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	helpRed  = lipgloss.NewStyle().Foreground(lipgloss.Color("#e05252"))
+	helpDim  = lipgloss.NewStyle().Foreground(lipgloss.Color("#6b7280"))
+	helpBold = lipgloss.NewStyle().Bold(true)
+	helpCmd  = lipgloss.NewStyle().Foreground(lipgloss.Color("#e05252")).Bold(true)
+	helpDesc = lipgloss.NewStyle().Foreground(lipgloss.Color("#9ca3af"))
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "oops [N]",
 	Short: "Terminal undo — restore your last destructive command",
-	Long:  style.Banner() + "\n\nUndo destructive terminal commands. Run `oops` to undo the last action, or `oops N` to undo the Nth most recent.",
 	Args:  cobra.MaximumNArgs(1),
 	RunE:  runUndo,
+}
+
+func init() {
+	rootCmd.SetHelpFunc(customHelp)
+}
+
+func customHelp(cmd *cobra.Command, args []string) {
+	fmt.Println()
+	fmt.Println("  " + helpRed.Render("oops") + helpDim.Render(" — undo for your terminal"))
+	fmt.Println()
+	fmt.Println("  " + helpBold.Render("Usage"))
+	fmt.Println("    oops" + helpDim.Render("           undo the last destructive action"))
+	fmt.Println("    oops " + helpDim.Render("<N>") + helpDim.Render("        undo the Nth most recent action"))
+	fmt.Println()
+	fmt.Println("  " + helpBold.Render("Commands"))
+	printCmd("oops log", "show undo history")
+	printCmd("oops size", "show backup disk usage")
+	printCmd("oops clean", "remove old backups")
+	printCmd("oops config", "view or change settings")
+	printCmd("oops doctor", "check installation health")
+	printCmd("oops init <shell>", "print shell hook (zsh, bash, fish)")
+	printCmd("oops uninstall", "remove oops from your system")
+	fmt.Println()
+	fmt.Println("  " + helpBold.Render("Examples"))
+	fmt.Println("    " + helpDim.Render("$") + " rm important-file.txt")
+	fmt.Println("    " + helpDim.Render("$") + " " + helpRed.Render("oops"))
+	fmt.Println("    " + style.Green.Render("✓") + " restored important-file.txt")
+	fmt.Println()
+	fmt.Println("    " + helpDim.Render("$") + " oops log" + helpDim.Render("          # see what you can undo"))
+	fmt.Println("    " + helpDim.Render("$") + " oops 2" + helpDim.Render("            # undo second-to-last"))
+	fmt.Println("    " + helpDim.Render("$") + " oops clean --all" + helpDim.Render("  # clear all backups"))
+	fmt.Println()
+	fmt.Println("  " + helpDim.Render("https://oops-cli.com  ·  https://github.com/gedaliahs/oops"))
+	fmt.Println()
+}
+
+func printCmd(name, desc string) {
+	padding := 20 - len(name)
+	if padding < 2 {
+		padding = 2
+	}
+	spaces := ""
+	for i := 0; i < padding; i++ {
+		spaces += " "
+	}
+	fmt.Println("    " + helpCmd.Render(name) + spaces + helpDesc.Render(desc))
 }
 
 func Execute() {
@@ -28,7 +82,6 @@ func Execute() {
 }
 
 func runUndo(cmd *cobra.Command, args []string) error {
-	// Lazy cleanup
 	cleanup.RunIfNeeded()
 
 	n := 1
@@ -56,12 +109,10 @@ func runUndo(cmd *cobra.Command, args []string) error {
 
 	entry := entries[n-1]
 
-	// Handle git-specific undos
 	if entry.GitAction != "" {
 		return undoGit(entry)
 	}
 
-	// Standard file restore
 	if entry.TrashDir == "" {
 		return fmt.Errorf("no backup found for this action")
 	}
@@ -71,7 +122,6 @@ func runUndo(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("restoring files: %w", err)
 	}
 
-	// Mark as undone
 	if err := journal.MarkUndone(entry.ID); err != nil {
 		fmt.Fprintln(os.Stderr, style.Warning("Could not mark entry as undone: "+err.Error()))
 	}
