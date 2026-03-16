@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # oops installer
-# Usage: curl -fsSL https://oops-ashen.vercel.app/install.sh | bash
+# Usage: curl -fsSL https://oops-cli.com/install.sh | bash
 
-BASE_URL="${OOPS_BASE_URL:-https://oops-ashen.vercel.app/releases}"
+BASE_URL="${OOPS_BASE_URL:-https://oops-cli.com/releases}"
 VERSION="0.1.0"
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
 
