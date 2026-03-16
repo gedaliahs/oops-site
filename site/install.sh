@@ -16,22 +16,6 @@ info()  { echo -e "  ${D}>${N} $1"; }
 ok()    { echo -e "  ${G}✓${N} $1"; }
 err()   { echo -e "  ${R}✗${N} $1"; exit 1; }
 
-ask() {
-  printf "  %b [Y/n] " "$1"
-  if [ -t 0 ]; then
-    read -r REPLY
-  else
-    REPLY="y"
-    echo "y"
-  fi
-  case "$REPLY" in
-    [nN]*) return 1 ;;
-    *) return 0 ;;
-  esac
-}
-
-# ── Header ───────────────────────────────────────────
-
 echo ""
 echo -e "${R}  oops${N} installer ${D}v${VERSION}${N}"
 echo -e "${D}  undo for your terminal${N}"
@@ -55,44 +39,34 @@ case "$OS" in
 esac
 
 info "Detected ${B}${OS}/${ARCH}${N}"
-echo ""
 
-# ── Step 1: Download and install binary ──────────────
+# ── Download and install binary ──────────────────────
 
-if ask "Install oops to ${B}${INSTALL_DIR}${N}?"; then
-  URL="${BASE_URL}/oops_${OS}_${ARCH}.tar.gz"
-  TMP=$(mktemp -d)
-  trap 'rm -rf "$TMP"' EXIT
+URL="${BASE_URL}/oops_${OS}_${ARCH}.tar.gz"
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
 
-  info "Downloading..."
-  if command -v curl &>/dev/null; then
-    curl -fsSL "$URL" -o "$TMP/oops.tar.gz"
-  elif command -v wget &>/dev/null; then
-    wget -qO "$TMP/oops.tar.gz" "$URL"
-  else
-    err "curl or wget required"
-  fi
-
-  tar -xzf "$TMP/oops.tar.gz" -C "$TMP"
-
-  if [ -w "$INSTALL_DIR" ]; then
-    mv "$TMP/oops" "$INSTALL_DIR/oops"
-  else
-    info "Requires sudo for ${INSTALL_DIR}"
-    sudo mv "$TMP/oops" "$INSTALL_DIR/oops"
-  fi
-  chmod +x "$INSTALL_DIR/oops"
-
-  ok "Installed to ${INSTALL_DIR}/oops"
+info "Downloading..."
+if command -v curl &>/dev/null; then
+  curl -fsSL "$URL" -o "$TMP/oops.tar.gz"
+elif command -v wget &>/dev/null; then
+  wget -qO "$TMP/oops.tar.gz" "$URL"
 else
-  echo -e "  ${D}Skipped.${N}"
-  echo ""
-  exit 0
+  err "curl or wget required"
 fi
 
-echo ""
+tar -xzf "$TMP/oops.tar.gz" -C "$TMP"
 
-# ── Step 2: Add shell hook ───────────────────────────
+if [ -w "$INSTALL_DIR" ]; then
+  mv "$TMP/oops" "$INSTALL_DIR/oops"
+else
+  info "Requires sudo for ${INSTALL_DIR}"
+  sudo mv "$TMP/oops" "$INSTALL_DIR/oops"
+fi
+chmod +x "$INSTALL_DIR/oops"
+ok "Installed to ${INSTALL_DIR}/oops"
+
+# ── Add shell hook ───────────────────────────────────
 
 SHELL_NAME=$(basename "${SHELL:-zsh}")
 HOOK_LINE=""
@@ -122,39 +96,28 @@ esac
 if [ -n "$RC_FILE" ]; then
   if [ -f "$RC_FILE" ] && grep -q "oops init" "$RC_FILE" 2>/dev/null; then
     ok "Shell hook already in ${RC_FILE}"
-  elif ask "Add shell hook to ${B}${RC_FILE}${N}?"; then
+  else
     if [ "$SHELL_NAME" = "fish" ]; then
       mkdir -p "$(dirname "$RC_FILE")"
     fi
     echo "" >> "$RC_FILE"
     echo "$HOOK_LINE" >> "$RC_FILE"
-    ok "Added to ${RC_FILE}"
-  else
-    echo ""
-    info "To add it manually later:"
-    info "  echo '${HOOK_LINE}' >> ${RC_FILE}"
+    ok "Added shell hook to ${RC_FILE}"
   fi
 fi
 
-echo ""
-
-# ── Step 3: Create oops directory ────────────────────
+# ── Create oops directory ────────────────────────────
 
 if [ ! -d "$HOME/.oops" ]; then
-  if ask "Create ${B}~/.oops${N} directory for backups?"; then
-    mkdir -p "$HOME/.oops/trash"
-    ok "Created ~/.oops"
-  else
-    echo -e "  ${D}Skipped (will be created on first use).${N}"
-  fi
+  mkdir -p "$HOME/.oops/trash"
+  ok "Created ~/.oops"
 else
   ok "~/.oops already exists"
 fi
 
-echo ""
-
 # ── Done ─────────────────────────────────────────────
 
+echo ""
 echo -e "  ${G}Done!${N} Open a new terminal tab, then try:"
 echo ""
 echo -e "  ${D}\$${N} rm something.txt"
