@@ -58,7 +58,9 @@ Any tool that runs shell commands in your terminal goes through the same hook â€
 
 ## How it works
 
-A `preexec` shell hook pattern-matches each command. Non-destructive commands pass through with zero overhead (no subprocess). Destructive commands trigger `oops protect`, which copies affected files to `~/.oops/trash/` in ~10ms, then lets the original command run.
+A `preexec` shell hook pattern-matches each command. Non-destructive commands pass through with zero overhead (no subprocess). Destructive commands trigger `oops protect`, which backs up affected files to `~/.oops/trash/` then lets the original command run.
+
+Backups use **hard links** â€” a second reference to the same data on disk. This means backing up a 10GB directory is as fast as a 10KB file (instant, no extra disk space). The data only takes up space after the original is deleted. Falls back to copying on external drives.
 
 ## Uninstall
 

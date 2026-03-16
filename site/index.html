@@ -77,7 +77,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       </button>
     </div>
-    <p class="note">The installer handles everything &mdash; downloads the binary, adds the shell hook, and sets up the backup directory. Just answer y/n.</p>
+    <p class="note">The installer handles everything &mdash; binary, shell hook, and backup directory.</p>
 
     <div class="term">
       <div class="term-bar">
@@ -183,7 +183,9 @@
             <tr><td>oops clean</td><td>Remove old backups (--all for everything)</td></tr>
             <tr><td>oops config</td><td>View or change settings</td></tr>
             <tr><td>oops doctor</td><td>Check installation health</td></tr>
+            <tr><td>oops tutorial</td><td>Interactive walkthrough</td></tr>
             <tr><td>oops uninstall</td><td>Remove oops from your system</td></tr>
+            <tr><td>oops --upgrade</td><td>Upgrade to the latest version</td></tr>
           </tbody>
         </table>
       </div>
@@ -194,7 +196,7 @@
 <div class="cta">
   <div class="container">
     <h2>Type <span>oops</span>. Get your files back.</h2>
-    <p>Single binary, written in Go, no dependencies. ~10ms backup overhead. Auto-cleanup after 7 days. <a href="docs.html">Read the docs</a>.</p>
+    <p>Single binary, written in Go, no dependencies. Backups use hard links (instant, no extra disk space). Auto-cleanup after 7 days. <a href="docs.html">Read the docs</a>.</p>
     <div class="install-bar">
       <code><span class="d">$</span> curl -fsSL oops-cli.com/install.sh | bash</code>
       <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
