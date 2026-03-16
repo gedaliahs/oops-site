@@ -25,13 +25,15 @@ type BackedUpFile struct {
 	Original string      `json:"original"`
 	Backup   string      `json:"backup"`
 	IsDir    bool        `json:"is_dir,omitempty"`
+	HardLink bool        `json:"hard_link,omitempty"`
 	Mode     os.FileMode `json:"mode"`
 	UID      int         `json:"uid,omitempty"`
 	GID      int         `json:"gid,omitempty"`
 }
 
-// Backup copies the given files into a new trash directory.
-// Returns the trash directory path and the list of backed up files.
+// Backup backs up the given files into a new trash directory.
+// Uses hard links when possible (instant, no extra disk space).
+// Falls back to copying when hard links aren't supported (cross-filesystem).
 func Backup(id string, files []string) (string, []BackedUpFile, error) {
 	trashDir := filepath.Join(config.TrashDir(), id)
 	filesDir := filepath.Join(trashDir, "files")
@@ -52,7 +54,6 @@ func Backup(id string, files []string) (string, []BackedUpFile, error) {
 			continue
 		}
 
-		// Create backup path preserving directory structure
 		backupPath := filepath.Join(filesDir, absPath)
 		backupDir := filepath.Dir(backupPath)
 		if err := os.MkdirAll(backupDir, 0o755); err != nil {
@@ -75,8 +76,14 @@ func Backup(id string, files []string) (string, []BackedUpFile, error) {
 		}
 
 		if info.IsDir() {
-			if err := copyDir(absPath, backupPath); err != nil {
-				continue
+			hardLinked, err := linkDir(absPath, backupPath)
+			if err != nil {
+				// Fall back to full copy
+				if err := copyDir(absPath, backupPath); err != nil {
+					continue
+				}
+			} else {
+				bf.HardLink = hardLinked
 			}
 		} else if info.Mode()&os.ModeSymlink != 0 {
 			link, err := os.Readlink(absPath)
@@ -87,8 +94,14 @@ func Backup(id string, files []string) (string, []BackedUpFile, error) {
 				continue
 			}
 		} else {
-			if err := copyFile(absPath, backupPath); err != nil {
-				continue
+			// Try hard link first (instant, no disk cost)
+			if err := os.Link(absPath, backupPath); err != nil {
+				// Fall back to copy (cross-filesystem)
+				if err := copyFile(absPath, backupPath); err != nil {
+					continue
+				}
+			} else {
+				bf.HardLink = true
 			}
 		}
 
@@ -100,7 +113,6 @@ func Backup(id string, files []string) (string, []BackedUpFile, error) {
 		return "", nil, fmt.Errorf("no files were backed up")
 	}
 
-	// Write manifest
 	manifest := Manifest{
 		ID:    id,
 		Files: backed,
@@ -130,27 +142,30 @@ func Restore(trashDir string) ([]string, error) {
 	var restored []string
 
 	for _, bf := range manifest.Files {
-		// Create parent directory if needed
 		parentDir := filepath.Dir(bf.Original)
 		if err := os.MkdirAll(parentDir, 0o755); err != nil {
 			return restored, fmt.Errorf("creating parent dir %s: %w", parentDir, err)
 		}
 
 		if bf.IsDir {
-			// Remove existing if present
 			os.RemoveAll(bf.Original)
-			if err := copyDir(bf.Backup, bf.Original); err != nil {
-				return restored, fmt.Errorf("restoring dir %s: %w", bf.Original, err)
+			// Try hard link restore first, fall back to copy
+			if _, err := linkDir(bf.Backup, bf.Original); err != nil {
+				if err := copyDir(bf.Backup, bf.Original); err != nil {
+					return restored, fmt.Errorf("restoring dir %s: %w", bf.Original, err)
+				}
 			}
 		} else {
-			if err := copyFile(bf.Backup, bf.Original); err != nil {
-				return restored, fmt.Errorf("restoring file %s: %w", bf.Original, err)
+			// Try hard link first, fall back to copy
+			os.Remove(bf.Original) // remove if exists
+			if err := os.Link(bf.Backup, bf.Original); err != nil {
+				if err := copyFile(bf.Backup, bf.Original); err != nil {
+					return restored, fmt.Errorf("restoring file %s: %w", bf.Original, err)
+				}
 			}
 		}
 
-		// Restore permissions
 		os.Chmod(bf.Original, bf.Mode)
-
 		restored = append(restored, bf.Original)
 	}
 
@@ -194,7 +209,6 @@ func ListTrashDirs() ([]string, error) {
 		}
 	}
 
-	// Sort newest first (names are timestamp-based)
 	for i, j := 0, len(dirs)-1; i < j; i, j = i+1, j-1 {
 		dirs[i], dirs[j] = dirs[j], dirs[i]
 	}
@@ -204,11 +218,48 @@ func ListTrashDirs() ([]string, error) {
 
 // Remove deletes a trash directory.
 func Remove(trashDir string) error {
-	// Safety check: must be under the trash root
 	if !strings.HasPrefix(trashDir, config.TrashDir()) {
 		return fmt.Errorf("refusing to remove path outside trash: %s", trashDir)
 	}
 	return os.RemoveAll(trashDir)
+}
+
+// linkDir hard-links all files in a directory tree.
+// Returns true if all files were hard-linked, false if any fell back to copy.
+func linkDir(src, dst string) (bool, error) {
+	allLinked := true
+	err := filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		rel, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+		target := filepath.Join(dst, rel)
+
+		if info.IsDir() {
+			return os.MkdirAll(target, info.Mode())
+		}
+
+		if info.Mode()&os.ModeSymlink != 0 {
+			link, err := os.Readlink(path)
+			if err != nil {
+				return err
+			}
+			return os.Symlink(link, target)
+		}
+
+		// Try hard link
+		if err := os.Link(path, target); err != nil {
+			// Fall back to copy
+			allLinked = false
+			return copyFile(path, target)
+		}
+		return nil
+	})
+	return allLinked, err
 }
 
 func copyFile(src, dst string) error {

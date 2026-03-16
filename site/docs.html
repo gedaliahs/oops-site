@@ -164,9 +164,15 @@ oops config risk_warning false   <span class="c"># disable warnings</span></div>
       <p>Auto-cleanup runs lazily, at most once per hour. Old entries get purged. If trash exceeds the max, oldest go first.</p>
 
       <h2 id="how">How it works</h2>
-      <p><strong>Shell hook</strong> &mdash; a <code>preexec</code> function pattern-matches your command. Safe commands pass through with zero overhead.</p>
-      <p><strong>Protect</strong> &mdash; parses the command, copies affected files to trash, writes a journal entry. ~10ms.</p>
-      <p><strong>Undo</strong> &mdash; reads the journal, copies files back. For git ops, applies the stash or recreates the branch.</p>
+      <p><strong>Shell hook</strong> &mdash; a <code>preexec</code> function pattern-matches your command. Safe commands (ls, cat, git log, etc.) pass through with zero overhead &mdash; no subprocess is spawned.</p>
+      <p><strong>Protect</strong> &mdash; for destructive commands, oops parses the command string, identifies the target files, and backs them up to <code>~/.oops/trash/</code>. Then the original command runs normally.</p>
+      <p><strong>Undo</strong> &mdash; reads the journal, restores files to their original paths. For git ops, applies the stash or recreates the deleted branch.</p>
+
+      <h2 id="backups">How backups work</h2>
+      <p>oops uses <strong>hard links</strong> instead of copying files. A hard link creates a second reference to the same data on disk &mdash; it's instant and uses no extra space. When the original file is deleted by <code>rm</code>, the data survives through the hard link in trash.</p>
+      <p>This means backing up a 10GB directory takes the same time as a 10KB file: essentially zero. The disk space is only consumed after the original is deleted, since the data now only has one reference (the trash link) instead of two.</p>
+      <p>Hard links only work on the same filesystem. If oops detects a cross-filesystem backup (e.g. an external drive), it falls back to a regular copy.</p>
+      <p>When you run <code>oops</code> to restore, the files are linked back to their original paths &mdash; also instant.</p>
 
       <h2 id="uninstall">Uninstall</h2>
       <div class="cb">oops uninstall</div>

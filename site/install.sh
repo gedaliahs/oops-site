@@ -21,6 +21,26 @@ echo -e "${R}  oops${N} installer ${D}v${VERSION}${N}"
 echo -e "${D}  undo for your terminal${N}"
 echo ""
 
+# ── What is oops ────────────────────────────────────
+
+echo -e "  ${B}What oops does:${N}"
+echo ""
+echo -e "  A shell hook runs in the background and watches for"
+echo -e "  destructive commands. When it sees one, it backs up the"
+echo -e "  affected files ${D}before${N} the command runs. If you make a"
+echo -e "  mistake, type ${R}oops${N} to restore them."
+echo ""
+echo -e "  ${D}Catches:${N} rm, mv overwrites, sed -i, git reset --hard,"
+echo -e "  ${D}        ${N} chmod, chown, file redirects, git branch -D"
+echo ""
+echo -e "  ${D}Backups use hard links when possible — instant, no extra${N}"
+echo -e "  ${D}disk space. Falls back to copy on external drives.${N}"
+echo -e "  ${D}Auto-cleanup after 7 days. Configurable via oops config.${N}"
+echo ""
+echo -e "  ${D}Also works with AI coding agents (Claude Code, Cursor,${N}"
+echo -e "  ${D}Aider) — any tool that runs shell commands.${N}"
+echo ""
+
 # ── Detect platform ──────────────────────────────────
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -38,6 +58,8 @@ case "$OS" in
   *) err "Unsupported OS: $OS" ;;
 esac
 
+echo -e "  ${B}Installing${N}"
+echo ""
 info "Detected ${B}${OS}/${ARCH}${N}"
 
 # ── Download and install binary ──────────────────────
@@ -64,7 +86,7 @@ else
   sudo mv "$TMP/oops" "$INSTALL_DIR/oops"
 fi
 chmod +x "$INSTALL_DIR/oops"
-ok "Installed to ${INSTALL_DIR}/oops"
+ok "Installed binary to ${INSTALL_DIR}/oops"
 
 # ── Add shell hook ───────────────────────────────────
 
@@ -110,7 +132,7 @@ fi
 
 if [ ! -d "$HOME/.oops" ]; then
   mkdir -p "$HOME/.oops/trash"
-  ok "Created ~/.oops"
+  ok "Created ~/.oops backup directory"
 else
   ok "~/.oops already exists"
 fi
@@ -118,9 +140,15 @@ fi
 # ── Done ─────────────────────────────────────────────
 
 echo ""
-echo -e "  ${G}Done!${N} Open a new terminal tab, then try:"
+echo -e "  ${G}All set.${N} Open a new terminal tab to activate."
 echo ""
-echo -e "  ${D}\$${N} rm something.txt"
-echo -e "  ${D}\$${N} ${R}oops${N}"
-echo -e "  ${G}✓${N} restored something.txt"
+echo -e "  ${B}Quick start:${N}"
+echo -e "    ${D}\$${N} rm something.txt      ${D}# delete a file${N}"
+echo -e "    ${D}\$${N} ${R}oops${N}                  ${D}# restore it${N}"
+echo ""
+echo -e "  ${B}Other commands:${N}"
+echo -e "    ${D}\$${N} oops log              ${D}# see undo history${N}"
+echo -e "    ${D}\$${N} oops 2                ${D}# undo second-to-last${N}"
+echo -e "    ${D}\$${N} oops tutorial          ${D}# interactive walkthrough${N}"
+echo -e "    ${D}\$${N} oops --help            ${D}# see all commands${N}"
 echo ""
