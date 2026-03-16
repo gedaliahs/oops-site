@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -38,7 +37,6 @@ func runUninstall(cmd *cobra.Command, args []string) error {
 
 	rcFile := rcFiles[shell]
 	if rcFile == "" {
-		// Try all of them
 		for _, f := range rcFiles {
 			removeHookFromFile(f)
 		}
@@ -49,30 +47,21 @@ func runUninstall(cmd *cobra.Command, args []string) error {
 	// 2. Remove ~/.oops directory
 	oopsDir := config.OopsDir()
 	if _, err := os.Stat(oopsDir); err == nil {
-		if confirm(fmt.Sprintf("Remove %s and all backups?", oopsDir)) {
-			os.RemoveAll(oopsDir)
-			fmt.Println(style.Success("Removed " + oopsDir))
-		} else {
-			fmt.Println(style.Dim.Render("  Skipped"))
-		}
+		os.RemoveAll(oopsDir)
+		fmt.Println(style.Success("Removed " + oopsDir))
 	}
 
-	// 3. Remove the binary
+	// 3. Tell user how to remove the binary
 	bin, err := os.Executable()
 	if err == nil {
-		if confirm(fmt.Sprintf("Remove binary %s?", bin)) {
-			if err := os.Remove(bin); err != nil {
-				fmt.Println(style.Warning("Could not remove binary (try: sudo rm " + bin + ")"))
-			} else {
-				fmt.Println(style.Success("Removed " + bin))
-			}
-		} else {
-			fmt.Println(style.Dim.Render("  Skipped"))
-		}
+		fmt.Println()
+		fmt.Println("  To finish, remove the binary:")
+		fmt.Println()
+		fmt.Println("    " + style.Bold.Render("sudo rm "+bin))
+		fmt.Println()
 	}
 
-	fmt.Println()
-	fmt.Println(style.Success("oops has been uninstalled. Open a new terminal tab to finish."))
+	fmt.Println(style.Success("Done. Open a new terminal tab to finish."))
 	return nil
 }
 
@@ -97,24 +86,11 @@ func removeHookFromFile(path string) {
 		return
 	}
 
-	if confirm(fmt.Sprintf("Remove shell hook from %s?", path)) {
-		// Remove trailing empty lines left behind
-		for len(filtered) > 0 && filtered[len(filtered)-1] == "" {
-			filtered = filtered[:len(filtered)-1]
-		}
-		filtered = append(filtered, "") // single trailing newline
-
-		os.WriteFile(path, []byte(strings.Join(filtered, "\n")), 0o644)
-		fmt.Println(style.Success("Removed hook from " + path))
-	} else {
-		fmt.Println(style.Dim.Render("  Skipped"))
+	for len(filtered) > 0 && filtered[len(filtered)-1] == "" {
+		filtered = filtered[:len(filtered)-1]
 	}
-}
+	filtered = append(filtered, "")
 
-func confirm(msg string) bool {
-	fmt.Printf("  %s [Y/n] ", msg)
-	reader := bufio.NewReader(os.Stdin)
-	reply, _ := reader.ReadString('\n')
-	reply = strings.TrimSpace(reply)
-	return reply == "" || strings.HasPrefix(strings.ToLower(reply), "y")
+	os.WriteFile(path, []byte(strings.Join(filtered, "\n")), 0o644)
+	fmt.Println(style.Success("Removed hook from " + path))
 }
