@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gedaliah/oops/internal/config"
 	"github.com/gedaliah/oops/internal/detect"
 	"github.com/gedaliah/oops/internal/journal"
 	"github.com/gedaliah/oops/internal/style"
@@ -43,12 +42,7 @@ func runProtectRedirect(cmd *cobra.Command, args []string) error {
 				continue // file doesn't exist, no need to back up
 			}
 
-			cfg := config.Load()
 			id := journal.GenerateID()
-
-			if cfg.RiskWarning {
-				// Only warn for non-obvious redirects
-			}
 
 			trashDir, backed, err := trash.Backup(id, []string{resolved})
 			if err != nil {

@@ -57,10 +57,8 @@ type Protection struct {
 
 // ParseRM analyzes an rm command and returns a Protection.
 func ParseRM(args []string) *Protection {
-	var flags []string
 	var paths []string
 	recursive := false
-	force := false
 
 	for i := 0; i < len(args); i++ {
 		a := args[i]
@@ -69,12 +67,8 @@ func ParseRM(args []string) *Protection {
 			break
 		}
 		if strings.HasPrefix(a, "-") && a != "-" {
-			flags = append(flags, a)
 			if strings.Contains(a, "r") || strings.Contains(a, "R") || a == "--recursive" {
 				recursive = true
-			}
-			if strings.Contains(a, "f") || a == "--force" {
-				force = true
 			}
 		} else {
 			paths = append(paths, a)
@@ -85,7 +79,6 @@ func ParseRM(args []string) *Protection {
 		return nil
 	}
 
-	_ = flags
 	resolved := resolvePaths(paths)
 	if len(resolved) == 0 {
 		return nil
@@ -93,9 +86,6 @@ func ParseRM(args []string) *Protection {
 
 	risk := RiskMedium
 	if recursive {
-		risk = RiskHigh
-	}
-	if force && recursive {
 		risk = RiskHigh
 	}
 
