@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BASE_URL="${OOPS_BASE_URL:-https://oops-cli.com/releases}"
-VERSION="0.2.0"
+VERSION="0.3.0"
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
 
 # Colors
