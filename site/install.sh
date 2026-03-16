@@ -142,9 +142,7 @@ fi
 # ── Done ─────────────────────────────────────────────
 
 echo ""
-echo -e "  ${G}All set!${N}"
-echo ""
-echo -e "  Run ${B}source ${RC_FILE}${N} to activate now, or just open a new tab."
+echo -e "  ${G}All set.${N} Open a new terminal tab to activate."
 echo ""
 echo -e "  Then try: ${D}\$${N} rm something.txt && ${R}oops${N}"
 echo -e "  Or run:   ${D}\$${N} oops tutorial"
