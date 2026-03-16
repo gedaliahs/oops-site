@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
 
 	"github.com/gedaliah/oops/internal/config"
 	"github.com/gedaliah/oops/internal/style"
@@ -60,25 +62,55 @@ func runDoctor(cmd *cobra.Command, args []string) error {
 		fmt.Println(style.Success("git available"))
 	}
 
-	// Check shell hook
-	shellVar := os.Getenv("SHELL")
-	if shellVar != "" {
-		fmt.Println(style.Success("Shell: " + shellVar))
+	// Check shell and hook
+	shellPath := os.Getenv("SHELL")
+	if shellPath != "" {
+		fmt.Println(style.Success("Shell: " + shellPath))
 	}
 
-	// Check if hook is active
-	oopsHook := os.Getenv("_OOPS_HOOK")
-	if oopsHook == "1" {
-		fmt.Println(style.Success("Shell hook is active"))
-	} else {
-		fmt.Println(style.Warning("Shell hook not detected (add `eval \"$(oops init zsh)\"` to your shell rc)"))
+	shellName := filepath.Base(shellPath)
+	home, _ := os.UserHomeDir()
+	hookFound := false
+
+	rcFiles := map[string]string{
+		"zsh":  filepath.Join(home, ".zshrc"),
+		"bash": filepath.Join(home, ".bashrc"),
+		"fish": filepath.Join(home, ".config", "fish", "config.fish"),
+	}
+
+	if rcFile, exists := rcFiles[shellName]; exists {
+		if data, err := os.ReadFile(rcFile); err == nil {
+			if strings.Contains(string(data), "oops init") {
+				hookFound = true
+				fmt.Println(style.Success("Shell hook in " + rcFile))
+			}
+		}
+	}
+
+	if !hookFound {
+		// Check all rc files as fallback
+		for _, rcFile := range rcFiles {
+			if data, err := os.ReadFile(rcFile); err == nil {
+				if strings.Contains(string(data), "oops init") {
+					hookFound = true
+					fmt.Println(style.Success("Shell hook in " + rcFile))
+					break
+				}
+			}
+		}
+	}
+
+	if !hookFound {
+		fmt.Println(style.Error("Shell hook not found — run the installer or add it manually:"))
+		fmt.Println(style.Dim.Render("  eval \"$(oops init " + shellName + ")\""))
+		ok = false
 	}
 
 	fmt.Println()
 	if ok {
 		fmt.Println(style.Success("All checks passed"))
 	} else {
-		fmt.Println(style.Error("Some checks failed — run `oops init <shell>` for setup instructions"))
+		fmt.Println(style.Error("Some checks failed"))
 	}
 
 	return nil
