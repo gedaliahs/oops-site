@@ -8,20 +8,7 @@ Undo for your terminal. A shell hook that backs up files before destructive comm
 curl -fsSL oops-cli.com/install.sh | bash
 ```
 
-Then add the hook to your shell:
-
-```sh
-# zsh (~/.zshrc)
-eval "$(oops init zsh)"
-
-# bash (~/.bashrc)
-eval "$(oops init bash)"
-
-# fish (~/.config/fish/config.fish)
-oops init fish | source
-```
-
-Restart your shell. Run `oops doctor` to verify.
+The installer handles everything — downloads the binary, adds the shell hook to your shell config, and creates the backup directory.
 
 ## Usage
 
@@ -49,7 +36,6 @@ $ oops
 | `git checkout .` | Creates stash | stash apply |
 | `git branch -D` | Logs SHA | recreate |
 | `git clean -fd` | Stashes untracked files | stash apply |
-| `truncate` | Copies file | restore |
 
 ## Commands
 
@@ -58,14 +44,24 @@ $ oops
 | `oops` | Undo last action (pass a number to go further back) |
 | `oops log` | Show undo history |
 | `oops size` | Show backup disk usage |
-| `oops clean` | Remove old backups |
-| `oops config` | View/set configuration |
-| `oops doctor` | Health check |
-| `oops init <shell>` | Print shell hook |
+| `oops clean` | Remove old backups (`--all` for everything) |
+| `oops config` | View or change settings |
+| `oops doctor` | Check installation health |
+| `oops uninstall` | Remove oops from your system |
+| `oops --version` | Print version |
+| `oops --upgrade` | Upgrade to the latest version |
 
 ## How it works
 
 A `preexec` shell hook pattern-matches each command. Non-destructive commands pass through with zero overhead (no subprocess). Destructive commands trigger `oops protect`, which copies affected files to `~/.oops/trash/` in ~10ms, then lets the original command run.
+
+## Uninstall
+
+```
+oops uninstall
+```
+
+Removes the shell hook and backup directory. Then run `sudo rm /usr/local/bin/oops` to remove the binary.
 
 ## License
 
