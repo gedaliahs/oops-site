@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>oops — undo for your terminal</title>
-  <meta name="description" content="Like Time Machine for your terminal. oops watches for destructive commands and lets you undo them.">
-  <meta name="theme-color" content="#1a1010">
+  <title>oops — Undo for your terminal</title>
+  <meta name="description" content="oops is a CLI that backs up files before destructive terminal commands and lets you restore them instantly.">
+  <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <meta property="og:title" content="oops — undo for your terminal">
-  <meta property="og:description" content="Like Time Machine for your terminal. Watches for destructive commands, backs up files, lets you undo.">
+  <meta property="og:title" content="oops — Undo for your terminal">
+  <meta property="og:description" content="A CLI that backs up files before destructive terminal commands and lets you restore them instantly.">
   <meta property="og:image" content="https://oops-cli.com/icon-512.png">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
@@ -17,133 +17,168 @@
 <body>
 
 <nav class="nav">
-  <div class="wrap">
-    <a href="index.html" class="nav-logo">
-      <img src="icon.svg" alt="oops icon">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="icon.svg" alt="">
       oops
     </a>
     <div class="nav-right">
       <a href="docs.html">Docs</a>
-      <a href="https://github.com/gedaliahs/oops" class="gh" target="_blank" rel="noopener">
-        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      </a>
+      <a href="https://github.com/gedaliahs/oops">GitHub</a>
+      <a href="#install" class="btn">Install</a>
     </div>
   </div>
 </nav>
 
 <div class="hero">
-  <img src="icon.svg" alt="oops" class="hero-icon">
-  <h1>oops</h1>
-  <p class="tagline">Like Time Machine for your terminal. Watches for destructive commands and lets you undo them.</p>
-  <div class="install-bar">
+  <h1>Undo for your terminal</h1>
+  <p>oops watches for destructive commands, silently backs up affected files, and restores them when you need them back.</p>
+  <div class="install-box">
     <code><span class="d">$ </span>curl -fsSL oops-cli.com/install.sh | bash</code>
     <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
     </button>
   </div>
-  <p class="sub">macOS &amp; Linux &middot; <a href="docs.html#install">other methods</a></p>
+  <p class="note">macOS and Linux &middot; <a href="docs.html#install">other install methods</a></p>
 
-  <div class="term-wrap">
+  <div class="demo">
     <div class="term">
       <div class="term-bar">
         <div class="term-dot"></div>
         <div class="term-dot"></div>
         <div class="term-dot"></div>
       </div>
-      <pre id="demo"><span class="t-line" style="animation-delay:.3s"><span class="tp">~ $</span> rm -rf src/</span>
-<span class="t-line" style="animation-delay:.8s"><span class="tw">&#9650; rm -r ~/project/src</span></span>
-<span class="t-line" style="animation-delay:1.2s"> </span>
-<span class="t-line" style="animation-delay:1.9s"><span class="tp">~ $</span> <span class="tr">oops</span></span>
-<span class="t-line" style="animation-delay:2.4s"><span class="tg">&#10003;</span> Undid: rm -r ~/project/src</span>
-<span class="t-line" style="animation-delay:2.8s"><span class="tg">&#8617;</span> restored ~/project/src</span></pre>
+      <pre><span class="p">~ $</span> rm -rf src/
+<span class="w">&#9650; rm -r ~/project/src</span>
+
+<span class="p">~ $</span> <span class="r">oops</span>
+<span class="g">&#10003; Undid: rm -r ~/project/src</span>
+<span class="g">&#8617; restored ~/project/src</span></pre>
     </div>
   </div>
 </div>
 
-<div class="sec">
-  <div class="wrap">
-    <h2>What it catches</h2>
-    <p class="desc">Backs up files before these commands run. Type <code style="font-family:var(--mono);font-size:.85rem;background:var(--surface);padding:.1em .35em;border:1px solid var(--border)">oops</code> to undo.</p>
-    <table class="tbl">
-      <thead><tr><th>Command</th><th>What happens</th><th>Undo</th></tr></thead>
+<div class="section bordered">
+  <div class="section-header">
+    <h2>How it works</h2>
+    <p>Three pieces. No configuration required.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Shell hook intercepts</h3>
+      <p>A <code>preexec</code> hook pattern-matches your command. Non-destructive commands pass through with zero overhead.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Files get backed up</h3>
+      <p>Destructive commands trigger a backup of affected files to <code>~/.oops/trash/</code> in about 10ms.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Type oops to undo</h3>
+      <p>Files are restored to their original paths. Use <code>oops 2</code> or <code>oops 3</code> to go further back.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section bordered">
+  <div class="section-header">
+    <h2>Supported commands</h2>
+    <p>Not just rm. oops handles the full range of destructive terminal operations.</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Command</th><th>What oops does</th><th>Undo</th></tr></thead>
       <tbody>
-        <tr><td>rm / rm -rf</td><td>Copies files to trash</td><td>restore</td></tr>
-        <tr><td>mv a b</td><td>Backs up overwrite target</td><td>restore b</td></tr>
-        <tr><td>> file.txt</td><td>Snapshots before redirect</td><td>restore</td></tr>
-        <tr><td>sed -i</td><td>Copies before in-place edit</td><td>restore</td></tr>
+        <tr><td>rm / rm -rf</td><td>Copies files to trash before deletion</td><td>restore</td></tr>
+        <tr><td>mv a b</td><td>Backs up the overwrite target</td><td>restore b</td></tr>
+        <tr><td>&gt; file.txt</td><td>Snapshots file before redirect overwrites it</td><td>restore</td></tr>
+        <tr><td>sed -i</td><td>Copies file before in-place edit</td><td>restore</td></tr>
         <tr><td>chmod / chown</td><td>Records original permissions</td><td>restore</td></tr>
-        <tr><td>git reset --hard</td><td>Creates a stash</td><td>stash apply</td></tr>
+        <tr><td>git reset --hard</td><td>Creates a stash before reset</td><td>stash apply</td></tr>
         <tr><td>git checkout .</td><td>Creates a stash</td><td>stash apply</td></tr>
-        <tr><td>git branch -D</td><td>Logs the branch SHA</td><td>recreate</td></tr>
+        <tr><td>git branch -D</td><td>Logs the branch SHA before deletion</td><td>recreate</td></tr>
         <tr><td>git clean -fd</td><td>Stashes untracked files</td><td>stash apply</td></tr>
+        <tr><td>truncate</td><td>Copies file before truncation</td><td>restore</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<div class="sec" id="install">
-  <div class="wrap">
-    <h2>Install</h2>
-    <p class="desc">Two steps.</p>
+<div class="section bordered">
+  <div class="details">
+    <div class="detail">
+      <div class="detail-val">~10ms</div>
+      <div class="detail-label">backup overhead</div>
+    </div>
+    <div class="detail">
+      <div class="detail-val">0ms</div>
+      <div class="detail-label">for safe commands</div>
+    </div>
+    <div class="detail">
+      <div class="detail-val">7 days</div>
+      <div class="detail-label">auto-cleanup</div>
+    </div>
+    <div class="detail">
+      <div class="detail-val">3 shells</div>
+      <div class="detail-label">zsh, bash, fish</div>
+    </div>
+  </div>
+</div>
 
-    <div class="setup-block">
-      <h3><span>1.</span> Get the binary</h3>
-      <div class="code-block"><span class="c"># one-liner</span>
+<div class="install-section" id="install">
+  <div class="section" style="padding-bottom:4rem">
+    <div class="section-header">
+      <h2>Get started</h2>
+      <p>Install the binary and add the shell hook. Under a minute.</p>
+    </div>
+    <div class="install-grid">
+      <div class="install-block">
+        <h3>1. Install</h3>
+        <div class="code-block"><span class="c"># one-liner</span>
 curl -fsSL oops-cli.com/install.sh | bash
 
 <span class="c"># or homebrew</span>
 brew install gedaliahs/oops/oops</div>
-    </div>
-
-    <div class="setup-block">
-      <h3><span>2.</span> Add the shell hook</h3>
-      <div class="code-block"><span class="c"># zsh — add to ~/.zshrc</span>
-eval <span class="s">"$(oops init zsh)"</span>
+      </div>
+      <div class="install-block">
+        <h3>2. Add the shell hook</h3>
+        <div class="code-block"><span class="c"># zsh — add to ~/.zshrc</span>
+eval <span class="r">"$(oops init zsh)"</span>
 
 <span class="c"># bash — add to ~/.bashrc</span>
-eval <span class="s">"$(oops init bash)"</span>
+eval <span class="r">"$(oops init bash)"</span>
 
 <span class="c"># fish — add to config.fish</span>
 oops init fish | source</div>
-    </div>
-
-    <div class="setup-block">
-      <h3><span>3.</span> Done</h3>
-      <div class="code-block"><span class="tp">~ $</span> rm important-file.txt
-<span class="tp">~ $</span> <span class="s">oops</span>
-<span class="g">&#10003;</span> Undid: rm important-file.txt
-<span class="g">&#8617;</span> restored important-file.txt</div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="bottom">
-  <div class="wrap">
-    <h2>Type <span>oops</span>. Get it back.</h2>
-    <p class="desc">~10ms overhead. Zero for non-destructive commands.</p>
-    <div class="install-bar">
-      <code><span class="d">$ </span>curl -fsSL oops-cli.com/install.sh | bash</code>
-      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      </button>
-    </div>
+<div class="cta">
+  <h2>Stop losing files to typos</h2>
+  <p>Single binary, no dependencies, written in Go.</p>
+  <div class="install-box">
+    <code><span class="d">$ </span>curl -fsSL oops-cli.com/install.sh | bash</code>
+    <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
   </div>
 </div>
 
 <footer class="footer">
-  <div class="wrap">
-    MIT license &middot; <a href="docs.html">Docs</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a>
-  </div>
+  <span>oops &mdash; MIT license</span>
+  <span><a href="docs.html">Docs</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
 </footer>
 
 <script>
 function copyCmd(btn,t){
   navigator.clipboard.writeText(t);
-  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#5cb85c" stroke-width="2.5" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg>';
-  setTimeout(()=>{btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';},2000);
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg>';
+  setTimeout(()=>{btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';},2000);
 }
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.t-line').forEach(l=>{l.style.animation='none';l.offsetHeight;l.style.animation='';})}})},{threshold:.4});
-obs.observe(document.getElementById('demo'));
 </script>
 
 </body>

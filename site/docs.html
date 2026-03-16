@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>oops — Docs</title>
+  <title>oops — Documentation</title>
   <meta name="description" content="Installation, setup, and command reference for oops.">
-  <meta name="theme-color" content="#1a1010">
+  <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
@@ -13,26 +13,23 @@
 <body>
 
 <nav class="nav">
-  <div class="wrap">
-    <a href="index.html" class="nav-logo">
-      <img src="icon.svg" alt="oops icon">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="icon.svg" alt="">
       oops
     </a>
     <div class="nav-right">
       <a href="docs.html">Docs</a>
-      <a href="https://github.com/gedaliahs/oops" class="gh" target="_blank" rel="noopener">
-        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      </a>
+      <a href="https://github.com/gedaliahs/oops">GitHub</a>
+      <a href="index.html#install" class="btn">Install</a>
     </div>
   </div>
 </nav>
 
-<div class="docs-hero">
-  <h1>Documentation</h1>
-  <p>Installation, setup, and command reference.</p>
-</div>
+<div class="docs-page">
 
-<div class="wrap docs-content">
+  <h1>Documentation</h1>
+  <p>Installation, shell setup, commands, and configuration.</p>
 
   <h2 id="install">Installation</h2>
 
@@ -42,32 +39,30 @@
   <p><strong>Homebrew</strong>:</p>
   <div class="code-block">brew install gedaliahs/oops/oops</div>
 
-  <p><strong>From source</strong>:</p>
+  <p><strong>From source</strong> (requires Go):</p>
   <div class="code-block">git clone https://github.com/gedaliahs/oops.git
 cd oops
 go build -o oops .
 sudo mv oops /usr/local/bin/</div>
 
-
   <h2 id="setup">Shell setup</h2>
 
-  <p>oops needs a shell hook to intercept commands. Add one line to your shell config:</p>
+  <p>oops requires a shell hook to intercept commands before they run. Add one line to your shell config:</p>
 
-  <p><strong>zsh</strong> — add to <code>~/.zshrc</code>:</p>
-  <div class="code-block">eval <span class="s">"$(oops init zsh)"</span></div>
+  <p><strong>zsh</strong> &mdash; add to <code>~/.zshrc</code>:</p>
+  <div class="code-block">eval <span class="r">"$(oops init zsh)"</span></div>
 
-  <p><strong>bash</strong> — add to <code>~/.bashrc</code>:</p>
-  <div class="code-block">eval <span class="s">"$(oops init bash)"</span></div>
+  <p><strong>bash</strong> &mdash; add to <code>~/.bashrc</code>:</p>
+  <div class="code-block">eval <span class="r">"$(oops init bash)"</span></div>
 
-  <p><strong>fish</strong> — add to <code>~/.config/fish/config.fish</code>:</p>
+  <p><strong>fish</strong> &mdash; add to <code>~/.config/fish/config.fish</code>:</p>
   <div class="code-block">oops init fish | source</div>
 
-  <p>Restart your shell or <code>source</code> the config to activate. Run <code>oops doctor</code> to verify.</p>
-
+  <p>Restart your shell or source the config file to activate. Run <code>oops doctor</code> to verify the installation.</p>
 
   <h2 id="usage">Usage</h2>
 
-  <p>Use your terminal normally. When a destructive command runs, oops backs up the affected files automatically. To undo:</p>
+  <p>Once the hook is active, oops works automatically. Use your terminal normally. When a destructive command runs, oops backs up the affected files before the command executes.</p>
 
   <div class="code-block"><span class="c"># undo the last action</span>
 oops
@@ -75,89 +70,70 @@ oops
 <span class="c"># undo the second-to-last action</span>
 oops 2
 
-<span class="c"># undo the third</span>
+<span class="c"># undo the third-to-last action</span>
 oops 3</div>
 
+  <h2 id="commands">Command reference</h2>
 
-  <h2 id="commands">Commands</h2>
+  <h3>oops</h3>
+  <p>Undo the last destructive action. Pass a number to go further back in history.</p>
 
-  <div class="cmd-ref">
-    <h3>oops</h3>
-    <p>Undo the last destructive action. Pass a number to undo the Nth most recent.</p>
-  </div>
+  <h3>oops log</h3>
+  <p>Show the undo history. Use <code>-n 50</code> to show more entries.</p>
 
-  <div class="cmd-ref">
-    <h3>oops log</h3>
-    <p>Show undo history. Use <code>-n 50</code> to show more entries.</p>
-  </div>
+  <h3>oops size</h3>
+  <p>Show total disk usage of oops backups.</p>
 
-  <div class="cmd-ref">
-    <h3>oops size</h3>
-    <p>Show disk usage of backups.</p>
-  </div>
+  <h3>oops clean</h3>
+  <p>Remove old backups. Use <code>--all</code> to remove everything, or <code>--older-than 3</code> to remove entries older than 3 days.</p>
 
-  <div class="cmd-ref">
-    <h3>oops clean</h3>
-    <p>Remove old backups. <code>--all</code> removes everything. <code>--older-than 3</code> removes entries older than 3 days.</p>
-  </div>
-
-  <div class="cmd-ref">
-    <h3>oops config</h3>
-    <p>View or change settings.</p>
-    <div class="code-block">oops config                      <span class="c"># show all</span>
+  <h3>oops config</h3>
+  <p>View or change settings. Run without arguments to see all current values.</p>
+  <div class="code-block">oops config                      <span class="c"># show all settings</span>
 oops config retention_days 14    <span class="c"># keep backups 14 days</span>
-oops config risk_warning false   <span class="c"># disable warnings</span></div>
-  </div>
+oops config risk_warning false   <span class="c"># disable high-risk warnings</span></div>
 
-  <div class="cmd-ref">
-    <h3>oops doctor</h3>
-    <p>Health check. Verifies directory, config, git, and shell hook.</p>
-  </div>
+  <h3>oops doctor</h3>
+  <p>Run a health check. Verifies the oops directory, config, git availability, and shell hook status.</p>
 
-  <div class="cmd-ref">
-    <h3>oops init &lt;shell&gt;</h3>
-    <p>Print the hook for zsh, bash, or fish.</p>
-  </div>
-
+  <h3>oops init &lt;shell&gt;</h3>
+  <p>Print the shell hook for zsh, bash, or fish.</p>
 
   <h2 id="config">Configuration</h2>
 
-  <p>Stored in <code>~/.oops/config.json</code>:</p>
+  <p>Settings are stored in <code>~/.oops/config.json</code>. Available keys:</p>
   <ul>
-    <li><code>retention_days</code> — days to keep backups. Default: <strong>7</strong></li>
-    <li><code>max_trash_bytes</code> — max trash size. Default: <strong>5 GB</strong></li>
-    <li><code>risk_warning</code> — warn before high-risk commands. Default: <strong>true</strong></li>
+    <li><strong>retention_days</strong> &mdash; Days to keep backups before auto-cleanup. Default: 7.</li>
+    <li><strong>max_trash_bytes</strong> &mdash; Maximum trash size in bytes. Oldest entries removed when exceeded. Default: 5 GB.</li>
+    <li><strong>risk_warning</strong> &mdash; Show a one-line warning before high-risk commands. Default: true.</li>
   </ul>
-
 
   <h2 id="storage">Storage</h2>
 
-  <p>Backups live in <code>~/.oops/</code>:</p>
+  <p>All data lives in <code>~/.oops/</code>:</p>
   <div class="code-block">~/.oops/
-  config.json          <span class="c"># settings</span>
-  journal.jsonl        <span class="c"># action log</span>
+  config.json            <span class="c"># settings</span>
+  journal.jsonl          <span class="c"># append-only action log</span>
   trash/
     20260315-143022-a1b2/
-      manifest.json    <span class="c"># metadata</span>
-      files/           <span class="c"># backed up files</span></div>
+      manifest.json      <span class="c"># file metadata</span>
+      files/             <span class="c"># backed up files</span></div>
 
-  <p>Auto-cleanup runs lazily (at most once per hour). Old entries get purged. If trash exceeds the max, oldest go first.</p>
-
+  <p>Auto-cleanup runs lazily on user-facing commands, at most once per hour. Entries older than <code>retention_days</code> are removed. If total trash size exceeds <code>max_trash_bytes</code>, the oldest entries are removed first.</p>
 
   <h2 id="how">How it works</h2>
 
-  <p><strong>Shell hook</strong> — a <code>preexec</code> function pattern-matches your command. Safe commands pass through with zero overhead (no subprocess). Destructive commands trigger <code>oops protect</code>.</p>
+  <p><strong>Shell hook.</strong> A <code>preexec</code> function (zsh), <code>DEBUG</code> trap (bash), or <code>fish_preexec</code> event (fish) pattern-matches each command. Safe commands pass through instantly with no subprocess spawned.</p>
 
-  <p><strong>Protect</strong> — parses the command, identifies target files, copies them to trash, writes a journal entry. Takes about 10ms. Then your command runs normally.</p>
+  <p><strong>Protect.</strong> Destructive commands trigger <code>oops protect</code>, which parses the command, identifies target files, copies them to <code>~/.oops/trash/</code>, and writes a journal entry. Takes approximately 10ms.</p>
 
-  <p><strong>Undo</strong> — reads the journal, finds the backup, copies files back to their original paths. For git operations, applies the stash or recreates the branch.</p>
+  <p><strong>Undo.</strong> <code>oops</code> reads the journal, finds the most recent backup, and copies files back to their original paths. For git operations, it applies the stash or recreates the deleted branch.</p>
 
 </div>
 
 <footer class="footer">
-  <div class="wrap">
-    MIT license &middot; <a href="index.html">Home</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a>
-  </div>
+  <span>oops &mdash; MIT license</span>
+  <span><a href="index.html">Home</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
 </footer>
 
 </body>
