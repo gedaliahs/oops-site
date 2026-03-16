@@ -51,20 +51,63 @@ chmod +x "$INSTALL_DIR/oops"
 echo ""
 echo "oops v${VERSION} installed to $INSTALL_DIR/oops"
 echo ""
-echo "Add this to your shell config:"
-echo ""
 
+# Detect shell and offer to add the hook automatically
 SHELL_NAME=$(basename "${SHELL:-zsh}")
+HOOK_LINE=""
+RC_FILE=""
+
 case "$SHELL_NAME" in
-  zsh)  echo '  eval "$(oops init zsh)"   # add to ~/.zshrc' ;;
-  bash) echo '  eval "$(oops init bash)"  # add to ~/.bashrc' ;;
-  fish) echo '  oops init fish | source   # add to ~/.config/fish/config.fish' ;;
-  *)
-    echo '  eval "$(oops init zsh)"   # zsh'
-    echo '  eval "$(oops init bash)"  # bash'
-    echo '  oops init fish | source   # fish'
+  zsh)
+    HOOK_LINE='eval "$(oops init zsh)"'
+    RC_FILE="$HOME/.zshrc"
+    ;;
+  bash)
+    HOOK_LINE='eval "$(oops init bash)"'
+    if [ -f "$HOME/.bashrc" ]; then
+      RC_FILE="$HOME/.bashrc"
+    elif [ -f "$HOME/.bash_profile" ]; then
+      RC_FILE="$HOME/.bash_profile"
+    else
+      RC_FILE="$HOME/.bashrc"
+    fi
+    ;;
+  fish)
+    HOOK_LINE='oops init fish | source'
+    RC_FILE="$HOME/.config/fish/config.fish"
     ;;
 esac
 
+if [ -n "$RC_FILE" ]; then
+  # Check if hook is already installed
+  if [ -f "$RC_FILE" ] && grep -q "oops init" "$RC_FILE" 2>/dev/null; then
+    echo "Shell hook already in $RC_FILE"
+  else
+    printf "Add shell hook to %s? [Y/n] " "$RC_FILE"
+    # Handle piped input (curl | bash) — default to yes
+    if [ -t 0 ]; then
+      read -r REPLY
+    else
+      REPLY="y"
+      echo "y"
+    fi
+    case "$REPLY" in
+      [nN]*)
+        echo ""
+        echo "To add it manually:"
+        echo "  echo '$HOOK_LINE' >> $RC_FILE"
+        ;;
+      *)
+        if [ "$SHELL_NAME" = "fish" ]; then
+          mkdir -p "$(dirname "$RC_FILE")"
+        fi
+        echo "" >> "$RC_FILE"
+        echo "$HOOK_LINE" >> "$RC_FILE"
+        echo "Added to $RC_FILE"
+        ;;
+    esac
+  fi
+fi
+
 echo ""
-echo "Then restart your shell. Run 'oops doctor' to verify."
+echo "Restart your shell to activate. Run 'oops doctor' to verify."
