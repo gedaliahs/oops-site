@@ -3,11 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>oops — Docs</title>
-  <meta name="description" content="Installation, setup, and command reference for oops.">
+  <title>oops Docs — Installation, commands, and configuration</title>
+  <meta name="description" content="How to install oops, set up the shell hook, use commands like oops log, oops clean, oops config, and configure backup retention and risk warnings.">
+  <meta name="keywords" content="oops cli docs, oops install, oops commands, terminal undo tool documentation, oops config, oops uninstall">
   <meta name="theme-color" content="#151515">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="canonical" href="https://oops-cli.com/docs.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://oops-cli.com/docs.html">
+  <meta property="og:title" content="oops Docs — Installation and command reference">
+  <meta property="og:description" content="How to install oops, set up the shell hook, and use all available commands.">
+  <meta property="og:image" content="https://oops-cli.com/icon-512.png">
+
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I install oops?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Run: curl -fsSL oops-cli.com/install.sh | bash. The installer downloads the binary, adds the shell hook, and creates the backup directory automatically."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I undo a deleted file in the terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If oops is installed, just type 'oops' to restore the last deleted file. Use 'oops 2' to go further back. oops automatically backs up files before rm, mv overwrites, sed -i, git reset --hard, and other destructive commands."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I uninstall oops?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Run 'oops uninstall' to remove the shell hook and backup directory, then run 'sudo rm /usr/local/bin/oops' to remove the binary."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What shells does oops support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "oops supports zsh, bash, and fish. It uses each shell's native preexec mechanism."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much disk space does oops use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Backups auto-clean after 7 days by default. Maximum trash size is 5GB. Both are configurable via 'oops config'. Run 'oops size' to check current usage and 'oops clean' to free space."
+        }
+      }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
