@@ -4,8 +4,8 @@
   --bg: #151515;
   --bg2: #1c1c1c;
   --fg: #e8e8e8;
-  --fg2: #999;
-  --fg3: #555;
+  --fg2: #aaa;
+  --fg3: #777;
   --red: #e05252;
   --red-dim: #e0525218;
   --red-border: #e0525244;
@@ -21,6 +21,27 @@
 }
 
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* ---- accessibility ---- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--red);
+  color: #fff;
+  padding: .5rem 1rem;
+  z-index: 100;
+  font-size: .9rem;
+  text-decoration: none;
+}
+.skip-link:focus { top: .5rem; }
+
+*:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+a:focus-visible { outline-offset: 3px; }
 
 body {
   background: var(--bg);
