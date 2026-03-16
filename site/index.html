@@ -5,39 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>oops — undo for your terminal</title>
   <meta name="description" content="Like Time Machine for your terminal. oops watches for destructive commands and lets you undo them.">
-  <meta name="theme-color" content="#111">
+  <meta name="theme-color" content="#1a1010">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="og:title" content="oops — undo for your terminal">
+  <meta property="og:description" content="Like Time Machine for your terminal. Watches for destructive commands, backs up files, lets you undo.">
   <meta property="og:image" content="https://oops-cli.com/icon-512.png">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">oops</a>
-    <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
+  <div class="wrap">
+    <a href="index.html" class="nav-logo">
+      <img src="icon.svg" alt="oops icon">
+      oops
+    </a>
+    <div class="nav-right">
       <a href="docs.html">Docs</a>
-      <a href="https://github.com/gedaliahs/oops" class="gh-link" target="_blank" rel="noopener">
+      <a href="https://github.com/gedaliahs/oops" class="gh" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
       </a>
     </div>
   </div>
 </nav>
 
-<!-- hero -->
 <div class="hero">
+  <img src="icon.svg" alt="oops" class="hero-icon">
   <h1>oops</h1>
-  <p class="subtitle">Like Time Machine for your terminal. Watches for destructive commands and lets you undo them.</p>
+  <p class="tagline">Like Time Machine for your terminal. Watches for destructive commands and lets you undo them.</p>
   <div class="install-bar">
-    <code><span class="d">$ </span>brew install oops</code>
-    <button class="copy-btn" onclick="copyCmd(this,'brew install oops')" aria-label="Copy">
+    <code><span class="d">$ </span>curl -fsSL oops-cli.com/install.sh | bash</code>
+    <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
     </button>
   </div>
-  <p class="note">macOS &amp; Linux &middot; <a href="docs.html#install">other methods</a></p>
+  <p class="sub">macOS &amp; Linux &middot; <a href="docs.html#install">other methods</a></p>
 
   <div class="term-wrap">
     <div class="term">
@@ -46,110 +50,80 @@
         <div class="term-dot"></div>
         <div class="term-dot"></div>
       </div>
-      <div class="term-body" id="demo">
-        <div class="t-line" style="animation-delay:.3s"><span class="t-p">~ $</span> rm -rf src/</div>
-        <div class="t-line" style="animation-delay:.8s"><span class="t-w">&#9650; rm -r ~/project/src</span></div>
-        <div class="t-line" style="animation-delay:1.2s">&nbsp;</div>
-        <div class="t-line" style="animation-delay:1.9s"><span class="t-p">~ $</span> <span class="t-r">oops</span></div>
-        <div class="t-line" style="animation-delay:2.4s"><span class="t-g">&#10003;</span> Undid: rm -r ~/project/src</div>
-        <div class="t-line" style="animation-delay:2.8s"><span class="t-g">&#8617;</span> restored ~/project/src</div>
-      </div>
+      <pre id="demo"><span class="t-line" style="animation-delay:.3s"><span class="tp">~ $</span> rm -rf src/</span>
+<span class="t-line" style="animation-delay:.8s"><span class="tw">&#9650; rm -r ~/project/src</span></span>
+<span class="t-line" style="animation-delay:1.2s"> </span>
+<span class="t-line" style="animation-delay:1.9s"><span class="tp">~ $</span> <span class="tr">oops</span></span>
+<span class="t-line" style="animation-delay:2.4s"><span class="tg">&#10003;</span> Undid: rm -r ~/project/src</span>
+<span class="t-line" style="animation-delay:2.8s"><span class="tg">&#8617;</span> restored ~/project/src</span></pre>
     </div>
   </div>
 </div>
 
-<!-- how it works -->
-<div class="section">
-  <div class="container wide">
-    <h2>How it works</h2>
-    <p class="lead">A shell hook intercepts destructive commands, backs up affected files, then lets the command run normally.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">01</div>
-        <h3>Hook matches the command</h3>
-        <p>A lightweight <code>preexec</code> hook checks if your command is destructive. If not, it passes through with zero overhead&mdash;no subprocess spawned.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">02</div>
-        <h3>Files get backed up</h3>
-        <p>For destructive commands, oops copies the affected files to <code>~/.oops/trash/</code> in about 10ms. Then your command runs normally.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">03</div>
-        <h3>Type oops to undo</h3>
-        <p>Your files are restored to their original paths. Use <code>oops 2</code> for second-to-last, or <code>oops log</code> to browse history.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- what it catches -->
-<div class="section">
-  <div class="container wide">
+<div class="sec">
+  <div class="wrap">
     <h2>What it catches</h2>
-    <p class="lead">Not just rm.</p>
-    <table class="cmd-table">
-      <thead>
-        <tr><th>Command</th><th>What oops does</th><th>Undo</th></tr>
-      </thead>
+    <p class="desc">Backs up files before these commands run. Type <code style="font-family:var(--mono);font-size:.85rem;background:var(--surface);padding:.1em .35em;border:1px solid var(--border)">oops</code> to undo.</p>
+    <table class="tbl">
+      <thead><tr><th>Command</th><th>What happens</th><th>Undo</th></tr></thead>
       <tbody>
         <tr><td>rm / rm -rf</td><td>Copies files to trash</td><td>restore</td></tr>
         <tr><td>mv a b</td><td>Backs up overwrite target</td><td>restore b</td></tr>
         <tr><td>> file.txt</td><td>Snapshots before redirect</td><td>restore</td></tr>
         <tr><td>sed -i</td><td>Copies before in-place edit</td><td>restore</td></tr>
-        <tr><td>chmod / chown</td><td>Records original permissions</td><td>restore perms</td></tr>
+        <tr><td>chmod / chown</td><td>Records original permissions</td><td>restore</td></tr>
         <tr><td>git reset --hard</td><td>Creates a stash</td><td>stash apply</td></tr>
         <tr><td>git checkout .</td><td>Creates a stash</td><td>stash apply</td></tr>
-        <tr><td>git branch -D</td><td>Logs the branch SHA</td><td>recreate branch</td></tr>
+        <tr><td>git branch -D</td><td>Logs the branch SHA</td><td>recreate</td></tr>
         <tr><td>git clean -fd</td><td>Stashes untracked files</td><td>stash apply</td></tr>
-        <tr><td>truncate</td><td>Copies before truncation</td><td>restore</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- features -->
-<div class="section">
-  <div class="container wide">
-    <h2>Details</h2>
-    <p class="lead">Fast, safe, stays out of your way.</p>
-    <div class="features">
-      <div class="feat">
-        <h3>~10ms overhead</h3>
-        <p>Non-destructive commands have zero overhead. Destructive ones take about 10ms to back up. Benchmarked.</p>
-      </div>
-      <div class="feat">
-        <h3>Risk scoring</h3>
-        <p><code>rm -rf ~/</code> is not the same as <code>rm tmp.log</code>. High-risk gets a warning. Low-risk stays silent.</p>
-      </div>
-      <div class="feat">
-        <h3>Auto-cleanup</h3>
-        <p>Entries older than 7 days are purged automatically. Max 5GB trash. Both configurable.</p>
-      </div>
-      <div class="feat">
-        <h3>Concurrent-safe</h3>
-        <p>File-locked JSONL journal. Multiple terminals, same machine, no corruption.</p>
-      </div>
-      <div class="feat">
-        <h3>All major shells</h3>
-        <p>zsh, bash, and fish. Uses each shell's native preexec mechanism.</p>
-      </div>
-      <div class="feat">
-        <h3>Single binary</h3>
-        <p>Written in Go. No runtime dependencies. Download and run.</p>
-      </div>
+<div class="sec" id="install">
+  <div class="wrap">
+    <h2>Install</h2>
+    <p class="desc">Two steps.</p>
+
+    <div class="setup-block">
+      <h3><span>1.</span> Get the binary</h3>
+      <div class="code-block"><span class="c"># one-liner</span>
+curl -fsSL oops-cli.com/install.sh | bash
+
+<span class="c"># or homebrew</span>
+brew install gedaliahs/oops/oops</div>
+    </div>
+
+    <div class="setup-block">
+      <h3><span>2.</span> Add the shell hook</h3>
+      <div class="code-block"><span class="c"># zsh — add to ~/.zshrc</span>
+eval <span class="s">"$(oops init zsh)"</span>
+
+<span class="c"># bash — add to ~/.bashrc</span>
+eval <span class="s">"$(oops init bash)"</span>
+
+<span class="c"># fish — add to config.fish</span>
+oops init fish | source</div>
+    </div>
+
+    <div class="setup-block">
+      <h3><span>3.</span> Done</h3>
+      <div class="code-block"><span class="tp">~ $</span> rm important-file.txt
+<span class="tp">~ $</span> <span class="s">oops</span>
+<span class="g">&#10003;</span> Undid: rm important-file.txt
+<span class="g">&#8617;</span> restored important-file.txt</div>
     </div>
   </div>
 </div>
 
-<!-- cta -->
-<div class="cta">
-  <div class="container">
-    <h2>Type <span>oops</span>. Get your files back.</h2>
-    <p class="lead">Install in under a minute.</p>
+<div class="bottom">
+  <div class="wrap">
+    <h2>Type <span>oops</span>. Get it back.</h2>
+    <p class="desc">~10ms overhead. Zero for non-destructive commands.</p>
     <div class="install-bar">
-      <code><span class="d">$ </span>brew install oops</code>
-      <button class="copy-btn" onclick="copyCmd(this,'brew install oops')" aria-label="Copy">
+      <code><span class="d">$ </span>curl -fsSL oops-cli.com/install.sh | bash</code>
+      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       </button>
     </div>
@@ -157,9 +131,8 @@
 </div>
 
 <footer class="footer">
-  <div class="footer-inner">
-    <span>oops &mdash; MIT license</span>
-    <span><a href="docs.html">Docs</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
+  <div class="wrap">
+    MIT license &middot; <a href="docs.html">Docs</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a>
   </div>
 </footer>
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>oops — Docs</title>
   <meta name="description" content="Installation, setup, and command reference for oops.">
-  <meta name="theme-color" content="#111">
+  <meta name="theme-color" content="#1a1010">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
@@ -13,14 +13,15 @@
 <body>
 
 <nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">oops</a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="docs.html" class="active">Docs</a>
-      <a href="https://github.com/gedaliahs/oops" class="gh-link" target="_blank" rel="noopener">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo">
+      <img src="icon.svg" alt="oops icon">
+      oops
+    </a>
+    <div class="nav-right">
+      <a href="docs.html">Docs</a>
+      <a href="https://github.com/gedaliahs/oops" class="gh" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
       </a>
     </div>
   </div>
@@ -31,15 +32,15 @@
   <p>Installation, setup, and command reference.</p>
 </div>
 
-<div class="container docs-content">
+<div class="wrap docs-content">
 
   <h2 id="install">Installation</h2>
 
-  <p><strong>Homebrew</strong> (macOS and Linux):</p>
-  <div class="code-block">brew install oops</div>
+  <p><strong>One-liner</strong> (macOS and Linux):</p>
+  <div class="code-block">curl -fsSL oops-cli.com/install.sh | bash</div>
 
-  <p><strong>Direct download</strong>:</p>
-  <div class="code-block">curl -fsSL https://raw.githubusercontent.com/gedaliahs/oops/main/install.sh | bash</div>
+  <p><strong>Homebrew</strong>:</p>
+  <div class="code-block">brew install gedaliahs/oops/oops</div>
 
   <p><strong>From source</strong>:</p>
   <div class="code-block">git clone https://github.com/gedaliahs/oops.git
@@ -50,45 +51,35 @@ sudo mv oops /usr/local/bin/</div>
 
   <h2 id="setup">Shell setup</h2>
 
-  <p>oops needs a shell hook to intercept commands before they run. Add one line to your shell config:</p>
+  <p>oops needs a shell hook to intercept commands. Add one line to your shell config:</p>
 
-  <p><strong>zsh</strong> &mdash; add to <code>~/.zshrc</code>:</p>
+  <p><strong>zsh</strong> — add to <code>~/.zshrc</code>:</p>
   <div class="code-block">eval <span class="s">"$(oops init zsh)"</span></div>
 
-  <p><strong>bash</strong> &mdash; add to <code>~/.bashrc</code>:</p>
+  <p><strong>bash</strong> — add to <code>~/.bashrc</code>:</p>
   <div class="code-block">eval <span class="s">"$(oops init bash)"</span></div>
 
-  <p><strong>fish</strong> &mdash; add to <code>~/.config/fish/config.fish</code>:</p>
+  <p><strong>fish</strong> — add to <code>~/.config/fish/config.fish</code>:</p>
   <div class="code-block">oops init fish | source</div>
 
-  <p>Restart your shell or <code>source</code> the config file to activate.</p>
-
-  <p>To verify everything is working:</p>
-  <div class="code-block">oops doctor</div>
+  <p>Restart your shell or <code>source</code> the config to activate. Run <code>oops doctor</code> to verify.</p>
 
 
-  <h2 id="usage">Basic usage</h2>
+  <h2 id="usage">Usage</h2>
 
-  <p>Once the hook is active, oops runs automatically. Use your terminal normally. When a destructive command runs, oops silently backs up the affected files before the command executes.</p>
+  <p>Use your terminal normally. When a destructive command runs, oops backs up the affected files automatically. To undo:</p>
 
-  <p>To undo the last destructive action:</p>
   <div class="code-block"><span class="c"># undo the last action</span>
 oops
 
 <span class="c"># undo the second-to-last action</span>
 oops 2
 
-<span class="c"># undo the third-to-last</span>
+<span class="c"># undo the third</span>
 oops 3</div>
 
-  <p><strong>Example:</strong></p>
-  <div class="code-block"><span class="c">$ </span>rm important-file.txt
-<span class="c">$ </span><span class="s">oops</span>
-<span class="g">&#10003;</span> Undid: rm important-file.txt
-<span class="g">&#8617;</span> restored important-file.txt</div>
 
-
-  <h2 id="commands">Command reference</h2>
+  <h2 id="commands">Commands</h2>
 
   <div class="cmd-ref">
     <h3>oops</h3>
@@ -97,111 +88,75 @@ oops 3</div>
 
   <div class="cmd-ref">
     <h3>oops log</h3>
-    <p>Show the undo history. Use <code>-n 50</code> to show more entries.</p>
+    <p>Show undo history. Use <code>-n 50</code> to show more entries.</p>
   </div>
 
   <div class="cmd-ref">
     <h3>oops size</h3>
-    <p>Show total disk usage of oops backups.</p>
+    <p>Show disk usage of backups.</p>
   </div>
 
   <div class="cmd-ref">
     <h3>oops clean</h3>
-    <p>Remove old backups. Use <code>--all</code> to remove everything, or <code>--older-than 3</code> to remove entries older than 3 days.</p>
+    <p>Remove old backups. <code>--all</code> removes everything. <code>--older-than 3</code> removes entries older than 3 days.</p>
   </div>
 
   <div class="cmd-ref">
     <h3>oops config</h3>
-    <p>View or change settings. Run without arguments to see all values.</p>
-    <div class="code-block"><span class="c"># show all settings</span>
-oops config
-
-<span class="c"># change retention to 14 days</span>
-oops config retention_days 14
-
-<span class="c"># disable high-risk warnings</span>
-oops config risk_warning false</div>
+    <p>View or change settings.</p>
+    <div class="code-block">oops config                      <span class="c"># show all</span>
+oops config retention_days 14    <span class="c"># keep backups 14 days</span>
+oops config risk_warning false   <span class="c"># disable warnings</span></div>
   </div>
 
   <div class="cmd-ref">
     <h3>oops doctor</h3>
-    <p>Run a health check. Verifies the oops directory, config, git availability, and shell hook status.</p>
+    <p>Health check. Verifies directory, config, git, and shell hook.</p>
   </div>
 
   <div class="cmd-ref">
     <h3>oops init &lt;shell&gt;</h3>
-    <p>Print the shell hook for zsh, bash, or fish.</p>
-  </div>
-
-  <div class="cmd-ref">
-    <h3>oops completions &lt;shell&gt;</h3>
-    <p>Generate shell completion scripts.</p>
+    <p>Print the hook for zsh, bash, or fish.</p>
   </div>
 
 
   <h2 id="config">Configuration</h2>
 
-  <p>Settings are stored in <code>~/.oops/config.json</code>. Available keys:</p>
-
+  <p>Stored in <code>~/.oops/config.json</code>:</p>
   <ul>
-    <li><code>retention_days</code> &mdash; Days to keep backups before auto-cleanup. Default: <strong>7</strong>.</li>
-    <li><code>max_trash_bytes</code> &mdash; Maximum trash size in bytes. Oldest entries are removed when exceeded. Default: <strong>5368709120</strong> (5 GB).</li>
-    <li><code>risk_warning</code> &mdash; Show a one-line warning before high-risk commands. Default: <strong>true</strong>.</li>
+    <li><code>retention_days</code> — days to keep backups. Default: <strong>7</strong></li>
+    <li><code>max_trash_bytes</code> — max trash size. Default: <strong>5 GB</strong></li>
+    <li><code>risk_warning</code> — warn before high-risk commands. Default: <strong>true</strong></li>
   </ul>
-
-
-  <h2 id="risk">Risk scoring</h2>
-
-  <p>oops scores each destructive command by risk level:</p>
-
-  <ul>
-    <li><strong>Low</strong> &mdash; Temp files, build output, caches. Backed up silently.</li>
-    <li><strong>Medium</strong> &mdash; Normal files, mv overwrites, sed -i. Backed up silently.</li>
-    <li><strong>High</strong> &mdash; Recursive deletes, home directory files, config files. Shows a one-line warning before proceeding.</li>
-  </ul>
-
-  <p>Risk is determined by: command type, flags (<code>-rf</code>, <code>-f</code>), file path (home vs temp), and whether the flag is recursive.</p>
 
 
   <h2 id="storage">Storage</h2>
 
-  <p>Everything lives in <code>~/.oops/</code>:</p>
-
+  <p>Backups live in <code>~/.oops/</code>:</p>
   <div class="code-block">~/.oops/
-  config.json        <span class="c"># settings</span>
-  journal.jsonl      <span class="c"># append-only action log</span>
-  .last_cleanup      <span class="c"># cleanup timestamp</span>
+  config.json          <span class="c"># settings</span>
+  journal.jsonl        <span class="c"># action log</span>
   trash/
-    20260315-143022-a1b2/  <span class="c"># one dir per action</span>
-      manifest.json        <span class="c"># file metadata</span>
-      files/               <span class="c"># backed up files</span></div>
+    20260315-143022-a1b2/
+      manifest.json    <span class="c"># metadata</span>
+      files/           <span class="c"># backed up files</span></div>
 
-  <p><strong>Auto-cleanup</strong> runs lazily on user-facing commands (at most once per hour). Entries older than <code>retention_days</code> are removed. If total trash exceeds <code>max_trash_bytes</code>, the oldest entries are removed first.</p>
-
-  <p>To manually clean up:</p>
-  <div class="code-block"><span class="c"># remove entries older than 3 days</span>
-oops clean --older-than 3
-
-<span class="c"># remove everything</span>
-oops clean --all</div>
+  <p>Auto-cleanup runs lazily (at most once per hour). Old entries get purged. If trash exceeds the max, oldest go first.</p>
 
 
-  <h2 id="how-it-works">How it works</h2>
+  <h2 id="how">How it works</h2>
 
-  <p>oops has three parts:</p>
+  <p><strong>Shell hook</strong> — a <code>preexec</code> function pattern-matches your command. Safe commands pass through with zero overhead (no subprocess). Destructive commands trigger <code>oops protect</code>.</p>
 
-  <p><strong>1. Shell hook.</strong> A <code>preexec</code> function (zsh), <code>DEBUG</code> trap (bash), or <code>fish_preexec</code> event (fish) that pattern-matches incoming commands. If the command starts with <code>rm</code>, <code>mv</code>, <code>sed</code>, <code>git reset</code>, etc., it calls <code>oops protect</code>. Otherwise it does nothing&mdash;no subprocess, no overhead.</p>
+  <p><strong>Protect</strong> — parses the command, identifies target files, copies them to trash, writes a journal entry. Takes about 10ms. Then your command runs normally.</p>
 
-  <p><strong>2. Protect.</strong> The <code>oops protect</code> subcommand parses the shell command, identifies which files will be affected, and copies them to <code>~/.oops/trash/</code>. It writes a journal entry and a manifest, then exits. Your original command runs normally after.</p>
-
-  <p><strong>3. Undo.</strong> The <code>oops</code> command reads the journal, finds the most recent entry, reads its manifest, and copies the backed-up files back to their original paths. For git operations, it applies the stash or recreates the branch.</p>
+  <p><strong>Undo</strong> — reads the journal, finds the backup, copies files back to their original paths. For git operations, applies the stash or recreates the branch.</p>
 
 </div>
 
 <footer class="footer">
-  <div class="footer-inner">
-    <span>oops &mdash; MIT license</span>
-    <span><a href="index.html">Home</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
+  <div class="wrap">
+    MIT license &middot; <a href="index.html">Home</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a>
   </div>
 </footer>
 
