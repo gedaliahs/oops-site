@@ -18,12 +18,20 @@ err()   { echo -e "  ${R}✗${N} $1"; exit 1; }
 
 UPGRADE=false
 if command -v oops &>/dev/null; then
+  CURRENT=$(oops --version 2>/dev/null | sed 's/oops v//')
   UPGRADE=true
 fi
 
 echo ""
 if $UPGRADE; then
-  echo -e "${R}  oops${N} upgrading to ${D}v${VERSION}${N}"
+  if [ "$CURRENT" = "$VERSION" ]; then
+    echo -e "${R}  oops${N} ${D}v${VERSION}${N}"
+    echo ""
+    echo -e "  ${G}Already on the latest version.${N}"
+    echo ""
+    exit 0
+  fi
+  echo -e "${R}  oops${N} upgrading ${D}v${CURRENT}${N} → ${D}v${VERSION}${N}"
 else
   echo -e "${R}  oops${N} installer ${D}v${VERSION}${N}"
   echo -e "${D}  undo for your terminal${N}"
