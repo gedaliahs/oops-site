@@ -156,9 +156,6 @@ func runUndo(cmd *cobra.Command, args []string) error {
 }
 
 func runUpgrade() error {
-	fmt.Println(helpRed.Render("oops") + " upgrading from " + helpDim.Render("v"+Version) + "...")
-	fmt.Println()
-
 	upgradeCmd := exec.Command("bash", "-c", "curl -fsSL oops-cli.com/install.sh | bash")
 	upgradeCmd.Stdout = os.Stdout
 	upgradeCmd.Stderr = os.Stderr
