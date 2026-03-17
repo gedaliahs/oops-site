@@ -11,21 +11,18 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="canonical" href="https://oops-cli.com/">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://oops-cli.com/">
   <meta property="og:title" content="oops — Undo for your terminal">
-  <meta property="og:description" content="A CLI that backs up files before destructive terminal commands and lets you restore them instantly. Supports rm, mv, sed, git reset, chmod, and more.">
+  <meta property="og:description" content="A CLI that backs up files before destructive terminal commands and lets you restore them instantly. Also catches destructive commands from AI coding agents.">
   <meta property="og:image" content="https://oops-cli.com/icon-512.png">
   <meta property="og:site_name" content="oops">
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="oops — Undo for your terminal">
   <meta name="twitter:description" content="A CLI that backs up files before destructive terminal commands and lets you restore them instantly.">
   <meta name="twitter:image" content="https://oops-cli.com/icon-512.png">
 
-  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -35,11 +32,7 @@
     "url": "https://oops-cli.com",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Linux",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "softwareVersion": "0.3.0",
     "license": "https://opensource.org/licenses/MIT",
     "codeRepository": "https://github.com/gedaliahs/oops",
@@ -55,27 +48,10 @@
     "description": "Install oops to automatically back up files before destructive terminal commands and restore them with one command.",
     "totalTime": "PT1M",
     "step": [
-      {
-        "@type": "HowToStep",
-        "name": "Install oops",
-        "text": "Run: curl -fsSL oops-cli.com/install.sh | bash. This downloads the binary, adds the shell hook, and creates the backup directory.",
-        "url": "https://oops-cli.com/#install"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Open a new terminal tab",
-        "text": "The shell hook activates when your shell starts. Open a new tab or window to activate it."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Use your terminal normally",
-        "text": "oops runs in the background. When you run a destructive command like rm, mv, sed -i, or git reset --hard, it silently backs up the affected files using hard links (instant, no extra disk space)."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Type oops to undo",
-        "text": "If you make a mistake, type 'oops' to restore the files. Use 'oops 2' for the second-to-last action. Use 'oops log' to see your full history."
-      }
+      { "@type": "HowToStep", "name": "Install oops", "text": "Run: curl -fsSL oops-cli.com/install.sh | bash", "url": "https://oops-cli.com/#install" },
+      { "@type": "HowToStep", "name": "Open a new terminal tab", "text": "The shell hook activates when your shell starts." },
+      { "@type": "HowToStep", "name": "Use your terminal normally", "text": "Destructive commands are silently backed up using hard links." },
+      { "@type": "HowToStep", "name": "Type oops to undo", "text": "Type 'oops' to restore files. 'oops 2' for second-to-last. 'oops log' for history." }
     ]
   }
   </script>
@@ -85,70 +61,11 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How do I undo rm in the terminal?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Install oops (curl -fsSL oops-cli.com/install.sh | bash). It automatically backs up files before rm runs. Type 'oops' to restore them. Works with rm, rm -rf, and rm with any flags."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can you undo a command in the terminal?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "There is no built-in undo in any terminal shell. oops adds undo by installing a shell hook that backs up files before destructive commands run. It catches rm, mv overwrites, sed -i, git reset --hard, chmod, chown, file redirects, and more. Type 'oops' to undo."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How to recover a deleted file on Mac terminal?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "If the file was deleted with rm, it bypasses the Trash and is permanently gone. Recovery tools like testdisk may help but are unreliable on SSDs. To prevent this, install oops — it backs up files before rm runs so you can restore them by typing 'oops'."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How to undo git reset --hard?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "For committed changes, check git reflog. For uncommitted changes, they are usually gone permanently. oops prevents this by creating a git stash before the reset runs. Type 'oops' to apply the stash and recover your work."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How to undo git checkout?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "git checkout . discards all uncommitted changes permanently. oops catches this by creating a stash before the checkout runs. Type 'oops' to apply the stash and get your changes back."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is there Ctrl+Z for the terminal?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No shell has built-in undo for commands. Ctrl+Z in the terminal suspends the current process, it doesn't undo anything. oops is a CLI tool that adds real undo — it backs up files before destructive commands and lets you restore them."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How to protect files from AI coding agents?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AI coding agents like Claude Code, Cursor, and Aider run shell commands on your behalf, including rm and git reset --hard. oops catches these automatically through the same shell hook. If an agent deletes something, type 'oops' to restore it."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How to undo sed -i?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "sed -i edits files in place with no backup. The original content is gone unless the file is tracked by git. oops prevents this by copying the file before sed -i runs. Type 'oops' to restore the original."
-        }
-      }
+      { "@type": "Question", "name": "How do I undo rm in the terminal?", "acceptedAnswer": { "@type": "Answer", "text": "Install oops (curl -fsSL oops-cli.com/install.sh | bash). It backs up files before rm runs. Type 'oops' to restore." }},
+      { "@type": "Question", "name": "Is there Ctrl+Z for the terminal?", "acceptedAnswer": { "@type": "Answer", "text": "No shell has built-in undo. oops adds this with a shell hook. Type 'oops' to undo destructive commands." }},
+      { "@type": "Question", "name": "How to undo git reset --hard?", "acceptedAnswer": { "@type": "Answer", "text": "oops creates a stash before the reset. Type 'oops' to apply the stash and recover your work." }},
+      { "@type": "Question", "name": "How to protect files from AI coding agents?", "acceptedAnswer": { "@type": "Answer", "text": "AI agents like Claude Code and Cursor run shell commands on your behalf. oops catches these through the same shell hook." }},
+      { "@type": "Question", "name": "How to undo sed -i?", "acceptedAnswer": { "@type": "Answer", "text": "oops copies the file before sed -i runs. Type 'oops' to restore the original." }}
     ]
   }
   </script>
@@ -163,12 +80,11 @@
   <div class="container">
     <a href="/" class="nav-logo" aria-label="oops home">oops</a>
     <div class="nav-r">
-      <a href="#commands">Commands</a>
-      <a href="#install">Install</a>
       <a href="/docs">Docs</a>
+      <a href="/faq">FAQ</a>
       <a href="https://github.com/gedaliahs/oops" class="nav-gh" aria-label="oops on GitHub">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
+        Star on GitHub
       </a>
     </div>
   </div>
@@ -178,16 +94,9 @@
 <div class="hero">
   <div class="container">
     <h1><span class="accent">Ctrl+Z</span><br><span class="white">for your terminal.</span></h1>
-    <p class="hero-sub">Every interface has undo except the terminal &mdash; where you can do the most damage. <strong>oops</strong> fixes that.</p>
-    <div class="install-bar">
-      <code><span class="d">$</span> curl -fsSL oops-cli.com/install.sh | bash</code>
-      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      </button>
-    </div>
-    <p class="note">macOS and Linux &middot; zsh, bash, fish</p>
+    <p class="hero-sub">Every interface has undo except the terminal &mdash; where you can do the most damage. <strong>oops</strong> fixes that. Also catches destructive commands from AI agents like Claude Code and Cursor.</p>
 
-    <div class="term" role="img" aria-label="Terminal demonstration of oops">
+    <div class="term" role="img" aria-label="Terminal demonstration: rm -rf src, then typing oops to restore it">
       <div class="term-bar">
         <div class="term-dot"></div>
         <div class="term-dot"></div>
@@ -200,33 +109,14 @@
 <span class="tg">&#10003; Undid: rm -r ~/project/src</span>
 <span class="tg">&#8617; restored ~/project/src</span></pre>
     </div>
-  </div>
-</div>
 
-<div class="section" id="commands">
-  <div class="container">
-    <div class="grid">
-      <div class="col-5 section-head">
-        <h2>What it catches</h2>
-        <p>oops intercepts destructive commands before they run and silently backs up the affected files. Non-destructive commands pass through with zero overhead.</p>
-      </div>
-      <div class="col-12">
-        <table>
-          <thead><tr><th>Command</th><th>What oops does</th><th>Undo</th></tr></thead>
-          <tbody>
-            <tr><td>rm / rm -rf</td><td>Copies files to trash before deletion</td><td>restore</td></tr>
-            <tr><td>mv a b</td><td>Backs up the overwrite target</td><td>restore b</td></tr>
-            <tr><td>&gt; file.txt</td><td>Snapshots file before redirect overwrites it</td><td>restore</td></tr>
-            <tr><td>sed -i</td><td>Copies file before in-place edit</td><td>restore</td></tr>
-            <tr><td>chmod / chown</td><td>Records original permissions</td><td>restore</td></tr>
-            <tr><td>git reset --hard</td><td>Creates a stash before reset</td><td>stash apply</td></tr>
-            <tr><td>git checkout .</td><td>Creates a stash</td><td>stash apply</td></tr>
-            <tr><td>git branch -D</td><td>Logs the branch SHA before deletion</td><td>recreate</td></tr>
-            <tr><td>git clean -fd</td><td>Stashes untracked files</td><td>stash apply</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="install-bar" style="margin-top:2rem">
+      <code><span class="d">$</span> curl -fsSL oops-cli.com/install.sh | bash</code>
+      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy install command">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
     </div>
+    <p class="note">macOS and Linux &middot; zsh, bash, fish &middot; zero overhead for safe commands, ~10ms for destructive ones</p>
   </div>
 </div>
 
@@ -234,13 +124,13 @@
   <div class="container">
     <div class="grid">
       <div class="col-5 section-head">
-        <h2>Works with AI agents</h2>
-        <p>Claude Code, Cursor, Aider, Codex &mdash; any tool that runs shell commands in your terminal goes through the same hook.</p>
+        <h2>A safety net for AI agents</h2>
+        <p>Claude Code, Cursor, Aider, Codex &mdash; they run shell commands on your behalf. Sometimes they get it wrong.</p>
       </div>
       <div class="col-12">
-        <p style="color:var(--fg2);max-width:640px">AI coding agents are getting more autonomy. They run <code>rm</code>, <code>git reset --hard</code>, and <code>mv</code> on your behalf &mdash; and sometimes they get it wrong. oops catches these the same way it catches your commands. If an agent deletes something it shouldn't have, type <code style="color:var(--red)">oops</code> and it's back.</p>
+        <p style="color:var(--fg2);max-width:640px">AI coding agents run <code>rm</code>, <code>git reset --hard</code>, and <code>mv</code> with increasing autonomy. oops catches these through the same shell hook that protects your own commands. If an agent deletes something it shouldn't have, type <code style="color:var(--red)">oops</code> and it's back.</p>
 
-        <div class="term" style="max-width:560px;margin-top:1.5rem">
+        <div class="term" role="img" aria-label="Terminal demonstration: AI agent runs git reset --hard, then typing oops to undo" style="max-width:560px;margin-top:1.5rem">
           <div class="term-bar">
             <div class="term-dot"></div>
             <div class="term-dot"></div>
@@ -260,39 +150,53 @@
   </div>
 </div>
 
-<div class="section" id="install">
+<div class="section" id="commands">
   <div class="container">
     <div class="grid">
       <div class="col-5 section-head">
-        <h2>Install</h2>
-        <p>One command. The installer handles the binary, shell hook, and backup directory.</p>
+        <h2>What it catches</h2>
+        <p>A shell hook intercepts destructive commands before they run and backs up the affected files using hard links &mdash; instant, no extra disk space.</p>
       </div>
       <div class="col-12">
-        <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
+        <table>
+          <thead><tr><th>Command</th><th>What oops does</th><th>Undo</th></tr></thead>
+          <tbody>
+            <tr><td>rm / rm -rf</td><td>Backs up files before deletion</td><td>restore</td></tr>
+            <tr><td>mv a b</td><td>Backs up the overwrite target</td><td>restore b</td></tr>
+            <tr><td>sed -i</td><td>Copies file before in-place edit</td><td>restore</td></tr>
+            <tr><td>git reset --hard</td><td>Creates a stash before reset</td><td>stash apply</td></tr>
+            <tr><td>git checkout .</td><td>Creates a stash</td><td>stash apply</td></tr>
+            <tr><td>git branch -D</td><td>Logs the branch SHA</td><td>recreate</td></tr>
+            <tr><td>&gt; file.txt</td><td>Snapshots before redirect</td><td>restore</td></tr>
+            <tr><td>chmod / chown</td><td>Records original permissions</td><td>restore</td></tr>
+            <tr><td>git clean -fd</td><td>Stashes untracked files</td><td>stash apply</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
 
-<div class="section">
+<div class="section" id="install">
   <div class="container">
     <div class="grid">
       <div class="col-5 section-head">
-        <h2>CLI reference</h2>
+        <h2>Install</h2>
+        <p>One command. The installer handles the binary, shell hook, and backup directory. Open a new tab to activate.</p>
       </div>
       <div class="col-12">
+        <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
+      </div>
+      <div class="col-12" style="margin-top:1.5rem">
         <table>
           <thead><tr><th>Command</th><th>Description</th></tr></thead>
           <tbody>
             <tr><td>oops</td><td>Undo the last destructive action</td></tr>
             <tr><td>oops 2</td><td>Undo the second-to-last action</td></tr>
             <tr><td>oops log</td><td>Show undo history</td></tr>
-            <tr><td>oops size</td><td>Show backup disk usage</td></tr>
             <tr><td>oops clean</td><td>Remove old backups (--all for everything)</td></tr>
-            <tr><td>oops config</td><td>View or change settings</td></tr>
-            <tr><td>oops doctor</td><td>Check installation health</td></tr>
             <tr><td>oops tutorial</td><td>Interactive walkthrough</td></tr>
-            <tr><td>oops uninstall</td><td>Remove oops from your system</td></tr>
+            <tr><td>oops doctor</td><td>Check installation health</td></tr>
             <tr><td>oops --upgrade</td><td>Upgrade to the latest version</td></tr>
           </tbody>
         </table>
@@ -304,13 +208,14 @@
 <div class="cta">
   <div class="container">
     <h2>Type <span>oops</span>. Get your files back.</h2>
-    <p>Single binary, written in Go, no dependencies. Backups use hard links (instant, no extra disk space). Auto-cleanup after 7 days. <a href="/docs">Read the docs</a>.</p>
+    <p>Single Go binary, no dependencies. Backups use hard links (instant, zero extra disk). Auto-cleanup after 7 days.</p>
     <div class="install-bar">
       <code><span class="d">$</span> curl -fsSL oops-cli.com/install.sh | bash</code>
-      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy">
+      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL oops-cli.com/install.sh | bash')" aria-label="Copy install command">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
       </button>
     </div>
+    <p style="margin-top:1.5rem"><a href="https://github.com/gedaliahs/oops" style="color:var(--red);text-decoration:none;font-weight:600">Star on GitHub</a> &middot; <a href="/docs" style="color:var(--fg2);text-decoration:none">Read the docs</a> &middot; <a href="/faq" style="color:var(--fg2);text-decoration:none">FAQ</a></p>
   </div>
 </div>
 
@@ -318,8 +223,15 @@
 
 <footer class="footer">
   <div class="container">
-    <span>oops &mdash; MIT license</span>
-    <span><a href="/docs">Docs</a> &middot; <a href="/faq">FAQ</a> &middot; <a href="/blog/undo-terminal-commands/">Blog</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
+    <div>
+      <span style="color:var(--fg2)">oops</span> &mdash; open-source terminal undo tool. MIT license.
+    </div>
+    <div>
+      <a href="/docs">Docs</a> &middot;
+      <a href="/faq">FAQ</a> &middot;
+      <a href="/blog/undo-terminal-commands/">Blog</a> &middot;
+      <a href="https://github.com/gedaliahs/oops">GitHub</a>
+    </div>
   </div>
 </footer>
 
