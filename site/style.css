@@ -437,6 +437,68 @@ dd code {
   border-radius: 3px;
 }
 
+/* ---- blog ---- */
+.post {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 5rem 2rem 6rem;
+}
+.post h1 {
+  font-family: var(--sans);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.35;
+  margin-bottom: .4rem;
+  color: var(--fg);
+}
+.post .date {
+  color: var(--fg3);
+  font-size: .8rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.post h2 {
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 2.5rem 0 .6rem;
+}
+.post p {
+  font-family: var(--sans);
+  color: var(--fg2);
+  font-size: .92rem;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+.post strong { color: var(--fg); }
+.post a { color: var(--red); }
+.post code {
+  font-family: var(--mono);
+  font-size: .8em;
+  color: var(--fg);
+  background: var(--bg2);
+  padding: .15em .4em;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+.post ul {
+  padding-left: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.post li {
+  font-family: var(--sans);
+  color: var(--fg2);
+  font-size: .92rem;
+  line-height: 1.8;
+  margin-bottom: .6rem;
+}
+.post .cb {
+  margin: 1.2rem 0 1.5rem;
+}
+
 /* ---- responsive ---- */
 @media (max-width: 1024px) {
   :root { --cols: 8; --margin: 40px; }

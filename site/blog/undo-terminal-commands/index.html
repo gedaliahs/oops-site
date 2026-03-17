@@ -18,7 +18,6 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "How to undo rm, git reset, and other destructive terminal commands",
-    "description": "Accidentally deleted a file with rm? Ran git reset --hard? Here's how to recover from destructive terminal commands.",
     "url": "https://oops-cli.com/blog/undo-terminal-commands/",
     "datePublished": "2026-03-16"
   }
@@ -26,91 +25,85 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+
 <a href="#main" class="skip-link">Skip to content</a>
 
 <nav class="nav" role="navigation" aria-label="Main navigation">
   <div class="container">
     <a href="/" class="nav-logo" aria-label="oops home">oops</a>
     <div class="nav-r">
-      <a href="/#commands">Commands</a>
-      <a href="/#install">Install</a>
       <a href="/docs">Docs</a>
+      <a href="/faq">FAQ</a>
       <a href="https://github.com/gedaliahs/oops" class="nav-gh" aria-label="oops on GitHub">
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
+        Star on GitHub
       </a>
     </div>
   </div>
 </nav>
 
 <main id="main">
-<div class="section" style="padding-top:6rem">
-  <div class="container">
-    <div class="grid">
-      <div class="col-8">
+<article class="post">
 
-        <div class="section-head" style="margin-bottom:2rem">
-          <h2 style="font-size:1.6rem;line-height:1.3">How to undo rm, git reset, and other destructive terminal commands</h2>
-          <p style="margin-top:.5rem">March 2026</p>
-        </div>
+  <h1>How to undo rm, git reset, and other destructive terminal commands</h1>
+  <p class="date">March 2026</p>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">Every developer has that moment. You type <code>rm -rf</code> and hit enter a fraction of a second before your brain catches up. Or you run <code>git reset --hard</code> and realize your uncommitted work is gone. Or you <code>mv</code> a file over another one you needed.</p>
+  <p>Every developer has that moment. You type <code>rm -rf</code> and hit enter a fraction of a second before your brain catches up. Or you run <code>git reset --hard</code> and realize your uncommitted work is gone.</p>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">The terminal has no undo. Every other interface has Ctrl+Z. The terminal, where you can do the most damage, has nothing.</p>
+  <p>The terminal has no undo. Every other interface has Ctrl+Z. The terminal, where you can do the most damage, has nothing.</p>
 
-        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">Can you recover a deleted file?</h3>
+  <h2>Can you recover a deleted file?</h2>
 
-        <p style="color:var(--fg2);margin-bottom:.5rem;line-height:1.75"><strong style="color:var(--fg)">rm</strong> &mdash; the file is gone. Unlike dragging to Trash, <code>rm</code> bypasses it entirely. Forensic tools like <code>testdisk</code> might recover it, but it's unreliable, especially on SSDs.</p>
+  <p><strong>rm</strong> &mdash; the file is gone. Unlike dragging to Trash, <code>rm</code> bypasses it entirely. Forensic tools like <code>testdisk</code> might recover it, but it's unreliable on SSDs.</p>
 
-        <p style="color:var(--fg2);margin-bottom:.5rem;line-height:1.75"><strong style="color:var(--fg)">git reset --hard</strong> &mdash; pushed commits are on the remote. Unpushed ones might be in <code>git reflog</code>. Uncommitted changes are gone.</p>
+  <p><strong>git reset --hard</strong> &mdash; pushed commits are on the remote. Unpushed ones might be in <code>git reflog</code>. Uncommitted changes are gone.</p>
 
-        <p style="color:var(--fg2);margin-bottom:.5rem;line-height:1.75"><strong style="color:var(--fg)">mv overwrite</strong> &mdash; the overwritten file is gone. No recovery.</p>
+  <p><strong>mv overwrite</strong> &mdash; the overwritten file is gone. No recovery.</p>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75"><strong style="color:var(--fg)">sed -i</strong> &mdash; original content is gone. If it was in git, you can checkout the old version.</p>
+  <p><strong>sed -i</strong> &mdash; original content is gone. If it was in git, you can checkout the old version.</p>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">The common thread: recovery after the fact is unreliable. The real solution is to prevent the loss in the first place.</p>
+  <p>Recovery after the fact is unreliable. The real solution is prevention.</p>
 
-        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">What people try</h3>
+  <h2>What people try</h2>
 
-        <p style="color:var(--fg2);margin-bottom:.5rem;line-height:1.75"><strong style="color:var(--fg)">rm -i</strong> &mdash; asks for confirmation. Gets annoying, most people disable it. Only covers rm.</p>
+  <p><strong>rm -i</strong> &mdash; asks for confirmation. Gets annoying, most people disable it. Only covers rm.</p>
 
-        <p style="color:var(--fg2);margin-bottom:.5rem;line-height:1.75"><strong style="color:var(--fg)">trash-cli / rip</strong> &mdash; moves files to trash instead of deleting. Only handles rm. You have to remember to use a different command.</p>
+  <p><strong>trash-cli / rip</strong> &mdash; moves files to trash instead of deleting. Only handles rm. You have to remember to use a different command.</p>
 
-        <p style="color:var(--fg2);margin-bottom:.5rem;line-height:1.75"><strong style="color:var(--fg)">Time Machine / backups</strong> &mdash; periodic. If you deleted a file 30 seconds ago and your last backup was an hour ago, you're out of luck.</p>
+  <p><strong>Time Machine / backups</strong> &mdash; periodic. If you deleted a file 30 seconds ago and your last backup was an hour ago, you're stuck.</p>
 
-        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">The shell hook approach</h3>
+  <h2>The shell hook approach</h2>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">What if the terminal itself could detect destructive commands and back up the affected files before they run? That's what <a href="/" style="color:var(--red)">oops</a> does. A shell hook runs before every command. Safe commands pass through with zero overhead. Destructive ones trigger a backup using hard links &mdash; instant, no extra disk space.</p>
+  <p>What if the terminal could detect destructive commands and back up the affected files before they run? That's what <a href="/">oops</a> does. A shell hook runs before every command. Safe commands pass through with zero overhead. Destructive ones trigger a backup using hard links &mdash; instant, no extra disk space.</p>
 
-        <div class="cb">$ rm -rf src/
+  <div class="cb">$ rm -rf src/
 $ <span class="r">oops</span>
 <span style="color:#5cb85c">&#10003; Undid: rm -r ~/project/src
 &#8617; restored ~/project/src</span></div>
 
-        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">AI agents make mistakes too</h3>
+  <h2>AI agents make mistakes too</h2>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">Claude Code, Cursor, Aider &mdash; these run shell commands on your behalf, including <code>rm</code> and <code>git reset --hard</code>. Since they go through the same shell, oops catches them automatically. Read more about <a href="/blog/ai-coding-agent-safety/" style="color:var(--red)">protecting your files from AI coding agents</a>.</p>
+  <p>Claude Code, Cursor, Aider &mdash; these run shell commands on your behalf, including <code>rm</code> and <code>git reset --hard</code>. Since they go through the same shell, oops catches them automatically. Read more about <a href="/blog/ai-coding-agent-safety/">protecting your files from AI coding agents</a>.</p>
 
-        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">How hard links make backups instant</h3>
+  <h2>How hard links make backups instant</h2>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">oops doesn't copy files — it creates hard links. A hard link is a second reference to the same data on disk. Creating one is instant regardless of file size, and it uses no extra space. When the original is deleted by <code>rm</code>, the data survives through the hard link in trash. This means backing up a 10GB directory is just as fast as a 10KB file. See the <a href="/faq" style="color:var(--red)">FAQ</a> for more details on <a href="/docs#backups" style="color:var(--red)">how backups work</a>.</p>
+  <p>oops doesn't copy files &mdash; it creates hard links. A hard link is a second reference to the same data on disk. Creating one is instant regardless of file size, and it uses no extra space. When the original is deleted, the data survives through the hard link. See the <a href="/faq">FAQ</a> and <a href="/docs#backups">docs</a> for details.</p>
 
-        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">Install</h3>
+  <h2>Install</h2>
 
-        <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
+  <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">macOS and Linux. zsh, bash, fish. Run <code>oops tutorial</code> after installing for an interactive walkthrough. See the <a href="/docs" style="color:var(--red)">full documentation</a> for all commands and configuration.</p>
+  <p>macOS and Linux. zsh, bash, fish. Run <code>oops tutorial</code> after installing for an interactive walkthrough. See the <a href="/docs">full documentation</a> for all commands.</p>
 
-      </div>
-    </div>
-  </div>
-</div>
+  <p><a href="/">oops-cli.com</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a> &middot; <a href="/docs">Docs</a></p>
+
+</article>
 </main>
 
 <footer class="footer">
   <div class="container">
-    <span>oops &mdash; MIT license</span>
-    <span><a href="/docs">Docs</a> &middot; <a href="/faq">FAQ</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></span>
+    <div><span style="color:var(--fg2)">oops</span> &mdash; open-source terminal undo tool. MIT license.</div>
+    <div><a href="/docs">Docs</a> &middot; <a href="/faq">FAQ</a> &middot; <a href="/blog/ai-coding-agent-safety/">Blog</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></div>
   </div>
 </footer>
 
