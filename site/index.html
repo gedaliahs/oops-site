@@ -96,19 +96,7 @@
     <h1><span class="accent">Ctrl+Z</span><br><span class="white">for your terminal.</span></h1>
     <p class="hero-sub">Every interface has undo except the terminal &mdash; where you can do the most damage. <strong>oops</strong> fixes that. Also catches destructive commands from AI agents like Claude Code and Cursor.</p>
 
-    <div class="term" role="img" aria-label="Terminal demonstration: rm -rf src, then typing oops to restore it">
-      <div class="term-bar">
-        <div class="term-dot"></div>
-        <div class="term-dot"></div>
-        <div class="term-dot"></div>
-      </div>
-      <pre><span class="tp">~ $</span> rm -rf src/
-<span class="tw">&#9650; rm -r ~/project/src</span>
-
-<span class="tp">~ $</span> <span class="tr">oops</span>
-<span class="tg">&#10003; Undid: rm -r ~/project/src</span>
-<span class="tg">&#8617; restored ~/project/src</span></pre>
-    </div>
+    <img src="/demo.gif" alt="Terminal demo: deleting a file with rm and restoring it with oops" style="max-width:560px;width:100%;border-radius:10px;border:1px solid var(--border);margin-top:1rem">
 
     <p style="color:var(--fg2);font-style:italic;margin-top:2rem">"Sweet! I could have used this years ago!" <span style="color:var(--fg3);font-style:normal">&mdash; David S.</span></p>
 
