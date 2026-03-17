@@ -484,6 +484,10 @@ func resolvePaths(paths []string) []string {
 
 // resolvePath resolves a single path to an absolute path.
 func resolvePath(p string) string {
+	if strings.HasPrefix(p, "~/") {
+		home, _ := os.UserHomeDir()
+		p = filepath.Join(home, p[2:])
+	}
 	if filepath.IsAbs(p) {
 		return filepath.Clean(p)
 	}
