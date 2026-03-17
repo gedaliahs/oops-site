@@ -16,29 +16,22 @@ info()  { echo -e "  ${D}>${N} $1"; }
 ok()    { echo -e "  ${G}✓${N} $1"; }
 err()   { echo -e "  ${R}✗${N} $1"; exit 1; }
 
-echo ""
-echo -e "${R}  oops${N} installer ${D}v${VERSION}${N}"
-echo -e "${D}  undo for your terminal${N}"
-echo ""
+UPGRADE=false
+if command -v oops &>/dev/null; then
+  UPGRADE=true
+fi
 
-# ── What is oops ────────────────────────────────────
-
-echo -e "  ${B}What oops does:${N}"
 echo ""
-echo -e "  A shell hook runs in the background and watches for"
-echo -e "  destructive commands. When it sees one, it backs up the"
-echo -e "  affected files ${D}before${N} the command runs. If you make a"
-echo -e "  mistake, type ${R}oops${N} to restore them."
-echo ""
-echo -e "  ${D}Catches:${N} rm, mv overwrites, sed -i, git reset --hard,"
-echo -e "  ${D}        ${N} chmod, chown, file redirects, git branch -D"
-echo ""
-echo -e "  ${D}Backups use hard links when possible — instant, no extra${N}"
-echo -e "  ${D}disk space. Falls back to copy on external drives.${N}"
-echo -e "  ${D}Auto-cleanup after 7 days. Configurable via oops config.${N}"
-echo ""
-echo -e "  ${D}Also works with AI coding agents (Claude Code, Cursor,${N}"
-echo -e "  ${D}Aider) — any tool that runs shell commands.${N}"
+if $UPGRADE; then
+  echo -e "${R}  oops${N} upgrading to ${D}v${VERSION}${N}"
+else
+  echo -e "${R}  oops${N} installer ${D}v${VERSION}${N}"
+  echo -e "${D}  undo for your terminal${N}"
+  echo ""
+  echo -e "  A shell hook that backs up files before destructive"
+  echo -e "  commands run. Type ${R}oops${N} to restore them."
+  echo -e "  ${D}Works with rm, mv, sed -i, git reset, chmod, and more.${N}"
+fi
 echo ""
 
 # ── Detect platform ──────────────────────────────────
@@ -142,8 +135,12 @@ fi
 # ── Done ─────────────────────────────────────────────
 
 echo ""
-echo -e "  ${G}All set.${N} Open a new terminal tab to activate."
-echo ""
-echo -e "  Then try: ${D}\$${N} rm something.txt && ${R}oops${N}"
-echo -e "  Or run:   ${D}\$${N} oops tutorial"
+if $UPGRADE; then
+  echo -e "  ${G}Upgraded to v${VERSION}.${N} Open a new terminal tab to activate."
+else
+  echo -e "  ${G}All set.${N} Open a new terminal tab to activate."
+  echo ""
+  echo -e "  Then try: ${D}\$${N} rm something.txt && ${R}oops${N}"
+  echo -e "  Or run:   ${D}\$${N} oops tutorial"
+fi
 echo ""
