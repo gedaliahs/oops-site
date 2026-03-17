@@ -89,13 +89,17 @@ $ <span class="r">oops</span>
 
         <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">AI agents make mistakes too</h3>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">Claude Code, Cursor, Aider &mdash; these run shell commands on your behalf, including <code>rm</code> and <code>git reset --hard</code>. Since they go through the same shell, oops catches them automatically.</p>
+        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">Claude Code, Cursor, Aider &mdash; these run shell commands on your behalf, including <code>rm</code> and <code>git reset --hard</code>. Since they go through the same shell, oops catches them automatically. Read more about <a href="/blog/ai-coding-agent-safety/" style="color:var(--red)">protecting your files from AI coding agents</a>.</p>
+
+        <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">How hard links make backups instant</h3>
+
+        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">oops doesn't copy files — it creates hard links. A hard link is a second reference to the same data on disk. Creating one is instant regardless of file size, and it uses no extra space. When the original is deleted by <code>rm</code>, the data survives through the hard link in trash. This means backing up a 10GB directory is just as fast as a 10KB file. See the <a href="/faq" style="color:var(--red)">FAQ</a> for more details on <a href="/docs#backups" style="color:var(--red)">how backups work</a>.</p>
 
         <h3 style="font-size:1.1rem;font-weight:700;color:var(--fg);margin:2rem 0 .8rem;font-family:var(--sans)">Install</h3>
 
         <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
 
-        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">macOS and Linux. zsh, bash, fish. Run <code>oops tutorial</code> after installing for an interactive walkthrough.</p>
+        <p style="color:var(--fg2);margin-bottom:1rem;line-height:1.75">macOS and Linux. zsh, bash, fish. Run <code>oops tutorial</code> after installing for an interactive walkthrough. See the <a href="/docs" style="color:var(--red)">full documentation</a> for all commands and configuration.</p>
 
       </div>
     </div>

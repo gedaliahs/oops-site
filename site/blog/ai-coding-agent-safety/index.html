@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to protect your files from AI coding agents</title>
+  <meta name="description" content="AI coding agents like Claude Code, Cursor, and Aider run destructive shell commands on your behalf. Here's how to add a safety net so you can undo their mistakes.">
+  <meta name="keywords" content="AI coding agent safety, protect files from AI agent, Claude Code undo, Cursor undo, Aider safety, AI agent rm, AI agent git reset, undo AI agent command">
+  <meta name="theme-color" content="#151515">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="canonical" href="https://oops-cli.com/blog/ai-coding-agent-safety/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="How to protect your files from AI coding agents">
+  <meta property="og:description" content="AI coding agents run destructive shell commands on your behalf. Here's how to add a safety net.">
+  <meta property="og:image" content="https://oops-cli.com/icon-512.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to protect your files from AI coding agents",
+    "description": "AI coding agents like Claude Code, Cursor, and Aider run destructive shell commands on your behalf. Here's how to add a safety net so you can undo their mistakes.",
+    "url": "https://oops-cli.com/blog/ai-coding-agent-safety/",
+    "datePublished": "2026-03-16"
+  }
+  </script>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .post { max-width: 640px; margin: 0 auto; padding: 6rem 2rem 6rem; }
+    .post h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.3; margin-bottom: .5rem; }
+    .post .date { color: var(--fg3); font-size: .85rem; margin-bottom: 2.5rem; }
+    .post h2 { font-size: 1.15rem; font-weight: 700; color: var(--fg); margin: 2.5rem 0 .8rem; font-family: var(--sans); }
+    .post p { color: var(--fg2); margin-bottom: 1rem; line-height: 1.75; font-size: .95rem; }
+    .post strong { color: var(--fg); }
+    .post code { font-family: var(--mono); font-size: .85em; background: var(--bg2); padding: .12em .4em; border-radius: 3px; border: 1px solid var(--border); }
+    .post a { color: var(--red); }
+    .post ul { padding-left: 1.3rem; margin-bottom: 1rem; }
+    .post li { color: var(--fg2); margin-bottom: .4rem; font-size: .95rem; line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="oops home">oops</a>
+    <div class="nav-r">
+      <a href="/docs">Docs</a>
+      <a href="/faq">FAQ</a>
+      <a href="https://github.com/gedaliahs/oops" class="nav-gh" aria-label="oops on GitHub">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="post">
+
+  <h1>How to protect your files from AI coding agents</h1>
+  <p class="date">March 2026</p>
+
+  <p>If you're using Claude Code, Cursor, Aider, or Codex, you've probably given an AI agent the ability to run shell commands on your machine. That includes <code>rm</code>, <code>git reset --hard</code>, <code>mv</code>, and everything else.</p>
+
+  <p>Most of the time it works great. But AI agents make mistakes. They misinterpret your intent, hallucinate file paths, or take destructive shortcuts. And unlike a human developer, they don't hesitate before running <code>rm -rf</code>.</p>
+
+  <h2>What can actually go wrong</h2>
+
+  <p>Here are real scenarios that happen with AI coding agents:</p>
+
+  <ul>
+    <li><strong>Deleting the wrong files.</strong> You ask the agent to clean up test files and it <code>rm -rf</code>'s your src directory instead. The agent saw "clean up" and was too aggressive.</li>
+    <li><strong>Resetting git history.</strong> The agent runs <code>git reset --hard HEAD~5</code> to fix a merge conflict, wiping your last five uncommitted changes in the process.</li>
+    <li><strong>Overwriting files with mv.</strong> The agent renames a file but the destination already exists. Your original file is gone.</li>
+    <li><strong>In-place edits gone wrong.</strong> The agent runs <code>sed -i</code> on the wrong file, or with a bad pattern, corrupting your config.</li>
+    <li><strong>Cleaning git state.</strong> <code>git checkout .</code> or <code>git clean -fd</code> to "start fresh" — wiping all your uncommitted work and untracked files.</li>
+  </ul>
+
+  <p>The agent usually doesn't realize it made a mistake. It reports success and moves on. You discover the damage later.</p>
+
+  <h2>Why existing protections don't help</h2>
+
+  <p><strong>Git</strong> only protects committed, tracked files. Uncommitted changes, untracked files, and anything outside a repo are unprotected.</p>
+
+  <p><strong>Agent confirmation prompts</strong> help for some operations, but they add friction and slow down the workflow. And many people run agents in autonomous mode specifically to avoid prompts.</p>
+
+  <p><strong>Backups / Time Machine</strong> are periodic. If the agent deleted something 30 seconds ago and your last backup was an hour ago, you're out of luck.</p>
+
+  <p><strong>trash-cli</strong> only catches <code>rm</code>. It doesn't help with <code>git reset --hard</code>, <code>mv</code> overwrites, <code>sed -i</code>, or any of the other destructive commands agents use.</p>
+
+  <h2>The shell hook approach</h2>
+
+  <p>Every command an AI agent runs goes through your terminal's shell. If you have a shell hook that intercepts destructive commands, it catches agent commands the same way it catches yours.</p>
+
+  <p>That's what <a href="/">oops</a> does. A <code>preexec</code> hook watches every command. When it sees something destructive, it backs up the affected files using hard links (instant, no extra disk space) before the command runs. If an agent deletes something it shouldn't have:</p>
+
+  <div class="cb"><span class="tp"># Agent ran a destructive command</span>
+<span class="tp">~ $</span> git reset --hard HEAD~3
+<span class="tw">&#9650; git reset --hard</span>
+
+<span class="tp"># You notice the damage</span>
+<span class="tp">~ $</span> <span class="r">oops</span>
+<span style="color:#5cb85c">&#10003; Undid: git reset --hard
+  Applied stash: stash@{0}</span></div>
+
+  <p>The agent doesn't know oops exists. It doesn't need to. oops works at the shell level, below any agent's awareness.</p>
+
+  <h2>What it catches from agents</h2>
+
+  <ul>
+    <li><code>rm</code> / <code>rm -rf</code> &mdash; backs up files before deletion</li>
+    <li><code>mv a b</code> &mdash; backs up the overwrite target</li>
+    <li><code>sed -i</code> &mdash; copies file before in-place edit</li>
+    <li><code>git reset --hard</code> &mdash; creates a stash before reset</li>
+    <li><code>git checkout .</code> &mdash; creates a stash</li>
+    <li><code>git clean -fd</code> &mdash; stashes untracked files</li>
+    <li><code>git branch -D</code> &mdash; logs the SHA before deletion</li>
+    <li><code>chmod</code> / <code>chown</code> &mdash; records original permissions</li>
+    <li><code>&gt; file</code> redirects &mdash; snapshots before overwrite</li>
+  </ul>
+
+  <p>Non-destructive commands (<code>ls</code>, <code>cat</code>, <code>git log</code>, <code>npm install</code>, etc.) pass through with zero overhead. No subprocess is spawned.</p>
+
+  <h2>Install</h2>
+
+  <div class="cb">curl -fsSL oops-cli.com/install.sh | bash</div>
+
+  <p>One command. Works on macOS and Linux with zsh, bash, or fish. The installer handles the binary, shell hook, and backup directory. Open a new terminal tab to activate.</p>
+
+  <p>Then just use your AI agent normally. oops runs silently in the background. When something goes wrong, type <code>oops</code>.</p>
+
+  <p><a href="/">Learn more at oops-cli.com</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></p>
+
+</div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div><span style="color:var(--fg2)">oops</span> &mdash; open-source terminal undo tool. MIT license.</div>
+    <div><a href="/docs">Docs</a> &middot; <a href="/faq">FAQ</a> &middot; <a href="/blog/undo-terminal-commands/">Blog</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
