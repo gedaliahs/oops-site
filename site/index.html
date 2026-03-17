@@ -127,10 +127,11 @@
     <div class="grid">
       <div class="col-5 section-head">
         <h2>A safety net for AI agents</h2>
-        <p>Claude Code, Cursor, Aider, Codex &mdash; they run shell commands on your behalf. Sometimes they get it wrong.</p>
+        <p>Works with CLI-based agents that run commands in your terminal &mdash; Claude Code, Cursor, Aider, and similar tools.</p>
       </div>
       <div class="col-12">
-        <p style="color:var(--fg2);max-width:640px">AI coding agents run <code>rm</code>, <code>git reset --hard</code>, and <code>mv</code> with increasing autonomy. Run <code style="color:var(--red)">oops agent-mode on</code> to intercept these commands at the PATH level &mdash; works even in non-interactive shells. If an agent deletes something it shouldn't have, type <code style="color:var(--red)">oops</code> and it's back.</p>
+        <p style="color:var(--fg2);max-width:640px">Run <code style="color:var(--red)">oops agent-mode on</code> to intercept destructive commands at the PATH level. This catches <code>rm</code>, <code>git reset --hard</code>, <code>mv</code>, and more from any CLI tool that runs shell commands &mdash; even in non-interactive shells. If an agent deletes something it shouldn't have, type <code style="color:var(--red)">oops</code> and it's back.</p>
+        <p style="color:var(--fg3);max-width:640px;font-size:.82rem;margin-top:.5rem">Note: agent mode works with tools that run commands through your system shell (Claude Code, Cursor, Aider, etc). Sandboxed environments like Claude Desktop run in isolation and can't be intercepted.</p>
 
         <div class="term" role="img" aria-label="Terminal demonstration: AI agent runs git reset --hard, then typing oops to undo" style="max-width:560px;margin-top:1.5rem">
           <div class="term-bar">
@@ -232,7 +233,8 @@
       <a href="/docs">Docs</a> &middot;
       <a href="/faq">FAQ</a> &middot;
       <a href="/blog/undo-terminal-commands/">Blog</a> &middot;
-      <a href="https://github.com/gedaliahs/oops">GitHub</a>
+      <a href="https://github.com/gedaliahs/oops">GitHub</a> &middot;
+      <a href="/privacy">Privacy</a>
     </div>
   </div>
 </footer>

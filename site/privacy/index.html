@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oops — Privacy</title>
+  <meta name="description" content="oops privacy policy. oops collects no data, makes no network requests, and stores everything locally.">
+  <meta name="theme-color" content="#151515">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="canonical" href="https://oops-cli.com/privacy/">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .post { max-width: 600px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+    .post h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; margin-bottom: 2rem; }
+    .post h2 { font-size: 1.05rem; font-weight: 600; color: var(--fg); margin: 2rem 0 .6rem; font-family: var(--sans); }
+    .post p { font-family: var(--sans); color: var(--fg2); font-size: .92rem; line-height: 1.8; margin-bottom: 1rem; }
+    .post strong { color: var(--fg); }
+    .post code { font-family: var(--mono); font-size: .84em; background: var(--bg2); padding: .12em .4em; border-radius: 3px; border: 1px solid var(--border); }
+    .post ul { padding-left: 1.2rem; margin-bottom: 1rem; }
+    .post li { font-family: var(--sans); color: var(--fg2); font-size: .92rem; line-height: 1.8; margin-bottom: .4rem; }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="oops home">oops</a>
+    <div class="nav-r">
+      <a href="/docs">Docs</a>
+      <a href="/faq">FAQ</a>
+      <a href="https://github.com/gedaliahs/oops" class="nav-gh" aria-label="oops on GitHub">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+<div class="post">
+
+  <h1>Privacy</h1>
+
+  <h2>oops collects nothing</h2>
+
+  <p>oops is a local CLI tool. It does not:</p>
+  <ul>
+    <li>Make any network requests</li>
+    <li>Send telemetry or analytics</li>
+    <li>Phone home or check for updates automatically</li>
+    <li>Access any remote servers</li>
+    <li>Collect any personal information</li>
+  </ul>
+
+  <p>The only network activity oops ever performs is when <strong>you</strong> explicitly run <code>oops --upgrade</code>, which downloads the latest binary from <code>oops-cli.com</code>.</p>
+
+  <h2>What's stored locally</h2>
+
+  <p>All data stays on your machine in <code>~/.oops/</code>:</p>
+  <ul>
+    <li><strong>Backups</strong> — hard links or copies of files you deleted, in <code>~/.oops/trash/</code></li>
+    <li><strong>Journal</strong> — a log of what commands were intercepted, in <code>~/.oops/journal.jsonl</code></li>
+    <li><strong>Config</strong> — your settings, in <code>~/.oops/config.json</code></li>
+  </ul>
+
+  <p>Auto-cleanup removes entries older than 7 days. You can clear everything at any time with <code>oops clean --all</code>.</p>
+
+  <h2>The website</h2>
+
+  <p>oops-cli.com is a static site hosted on Vercel. It does not use cookies, tracking scripts, or analytics. The only data Vercel collects is standard server logs (IP address, request path, timestamp) as part of serving the site.</p>
+
+  <h2>Open source</h2>
+
+  <p>oops is MIT licensed. The full source code is available at <a href="https://github.com/gedaliahs/oops" style="color:var(--red)">github.com/gedaliahs/oops</a>. You can audit every line.</p>
+
+</div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div><span style="color:var(--fg2)">oops</span> &mdash; open-source terminal undo tool. MIT license.</div>
+    <div><a href="/docs">Docs</a> &middot; <a href="/faq">FAQ</a> &middot; <a href="https://github.com/gedaliahs/oops">GitHub</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
