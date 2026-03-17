@@ -10,15 +10,17 @@ import (
 )
 
 type Config struct {
-	RetentionDays int   `json:"retention_days"`
-	MaxTrashBytes int64 `json:"max_trash_bytes"`
-	RiskWarning   bool  `json:"risk_warning"`
+	RetentionDays int    `json:"retention_days"`
+	MaxTrashBytes int64  `json:"max_trash_bytes"`
+	RiskWarning   bool   `json:"risk_warning"`
+	ConfirmMode   string `json:"confirm_mode"` // "off", "high", "all"
 }
 
 var Default = Config{
 	RetentionDays: 7,
 	MaxTrashBytes: 5 * 1024 * 1024 * 1024, // 5GB
 	RiskWarning:   true,
+	ConfirmMode:   "off",
 }
 
 func OopsDir() string {
@@ -78,6 +80,8 @@ func Get(key string) string {
 		return strconv.FormatInt(cfg.MaxTrashBytes, 10)
 	case "risk_warning":
 		return strconv.FormatBool(cfg.RiskWarning)
+	case "confirm_mode":
+		return cfg.ConfirmMode
 	default:
 		return ""
 	}
@@ -100,6 +104,11 @@ func Set(key, value string) error {
 		cfg.MaxTrashBytes = n
 	case "risk_warning":
 		cfg.RiskWarning = value == "true" || value == "1"
+	case "confirm_mode":
+		if value != "off" && value != "high" && value != "all" {
+			return fmt.Errorf("invalid confirm_mode: %s (use off, high, or all)", value)
+		}
+		cfg.ConfirmMode = value
 	}
 	return Save(cfg)
 }

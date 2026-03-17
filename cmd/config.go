@@ -38,6 +38,7 @@ func runConfig(cmd *cobra.Command, args []string) error {
 		fmt.Printf("retention_days   = %d\n", cfg.RetentionDays)
 		fmt.Printf("max_trash_bytes  = %d (%s)\n", cfg.MaxTrashBytes, style.FormatSize(cfg.MaxTrashBytes))
 		fmt.Printf("risk_warning     = %v\n", cfg.RiskWarning)
+		fmt.Printf("confirm_mode     = %s\n", cfg.ConfirmMode)
 		return nil
 
 	case 1:

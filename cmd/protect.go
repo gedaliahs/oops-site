@@ -42,7 +42,18 @@ func doProtect(command string) error {
 	cwd, _ := os.Getwd()
 
 	for _, p := range protections {
-		if p.Risk == detect.RiskHigh && cfg.RiskWarning {
+		// Confirmation mode: print a confirm prompt marker to stderr
+		// The shell hook reads this and prompts the user
+		shouldConfirm := false
+		if cfg.ConfirmMode == "all" {
+			shouldConfirm = true
+		} else if cfg.ConfirmMode == "high" && p.Risk == detect.RiskHigh {
+			shouldConfirm = true
+		}
+
+		if shouldConfirm {
+			fmt.Fprintf(os.Stderr, "OOPS_CONFIRM:%s\n", p.Desc)
+		} else if p.Risk == detect.RiskHigh && cfg.RiskWarning {
 			fmt.Fprintln(os.Stderr, style.Warning(p.Desc))
 		}
 
